@@ -338,13 +338,17 @@
         }
         if (checkNivlekAloneEvernight()) return;
 
-        statusDiv.textContent =
-          right.length === 3 ? "🎉 CoI-Completed is saved!" : "";
-      }
+        if (right.length === 3) {
+          statusDiv.textContent = "🎉 CoI-Completed is saved!";
+          gameOver = true;
+        } else {
+          statusDiv.textContent = "";
+        }
 
       window.addEventListener("resize", render);
       render();
     </script>
   </body>
 </html>
+
 
