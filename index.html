@@ -142,12 +142,12 @@
       Wingy and Nets cannot stand each other and shouldn't be left alone.<br />
       Leaving Nivlek alone in Nation of Evernight will remove any hint of sanity
       he had.<br />
-      Finish in <span id="maxMove"></span> moves or they will all starve.<br />
+      Finish in <span class="maxMove"></span> moves or they will all starve.<br />
       You can only take <b>1 additional person</b> on the raft per move
       (everyone is too fat)
     </p>
     <div class="status" id="status"></div>
-    <p>Moves: <span id="moveCount">0</span> / <span id="maxMove"></span></p>
+    <p>Moves: <span id="moveCount">0</span> / <span class="maxMove"></span></p>
 
     <div class="banks">
       <div class="bank left" id="nationEvernight">
@@ -170,7 +170,9 @@
 
     <script>
       const maxMove = 10;
-      document.getElementById("maxMove").textContent = maxMove;
+      document.querySelectorAll(".maxMove").forEach((el) => {
+        el.textContent = maxMove;
+      });
       const items = { Wingy: "wing.jpg", Nets: "nets.jpg", Nivlek: "niv.jpg" };
       let left = Object.keys(items),
         right = [],
@@ -283,4 +285,5 @@
     </script>
   </body>
 </html>
+
 
