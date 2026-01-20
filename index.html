@@ -237,12 +237,8 @@
 
       function checkNivlekAloneEvernight() {
         if (left.includes("Nivlek") && left.length === 1) {
-          if (
-            confirm(
-              "🌀 Nivlek was left alone in Nation of Evernight. Try again?",
-            )
-          )
-            location.reload();
+          alert("🌀 Nivlek was left alone in Nation of Evernight. Try again?");
+          location.reload();
           return true;
         }
         return false;
@@ -252,8 +248,8 @@
         moveCount++;
 
         if (moveCount > maxMove) {
-          if (confirm("⏳ You took too long. Everyone died. Try again?"))
-            location.reload();
+          alert("⏳ You took too long. Everyone died.");
+          location.reload();
           return;
         }
 
@@ -269,7 +265,8 @@
           invalidState(left, !wassimLeavesLeft) ||
           invalidState(right, !wassimLeavesRight)
         ) {
-          if (confirm("💀 Someone got killed. Try again?")) location.reload();
+          alert("💀 Someone got killed. Try again?");
+          location.reload();
           return;
         }
 
@@ -285,5 +282,6 @@
     </script>
   </body>
 </html>
+
 
 
