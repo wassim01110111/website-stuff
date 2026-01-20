@@ -131,6 +131,52 @@
         margin-top: 20px;
         font-weight: bold;
       }
+      #deathOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.95);
+        color: #ff4d4d;
+        font-family: "Arial Black", Arial, sans-serif;
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      #deathOverlay.show {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      #deathOverlay button {
+        margin-top: 25px;
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        background: #ff4d4d;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      #deathOverlay button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
+      }
     </style>
   </head>
   <body>
@@ -167,8 +213,23 @@
         <button onclick="moveRaft()">Move Raft</button>
       </div>
     </div>
+    <div id="deathOverlay">
+      <div id="deathText">💀 Someone got killed!</div>
+      <button id="deathButton">Try Again</button>
+    </div>
 
     <script>
+      const deathOverlay = document.getElementById("deathOverlay");
+      const deathText = document.getElementById("deathText");
+      const deathButton = document.getElementById("deathButton");
+      let dead = false;
+      function showDeathMessage(message) {
+        dead = true;
+        deathText.textContent = message;
+        deathOverlay.classList.add("show");
+      }
+      deathButton.onclick = () => location.reload();
+
       const maxMove = 10;
       document.querySelectorAll(".maxMove").forEach((el) => {
         el.textContent = maxMove;
@@ -214,11 +275,15 @@
       }
 
       function toggleItem(name, location) {
+        if (dead) return;
         if (location === "raft") {
           raft = raft.filter((i) => i !== name);
           (raftSide === "left" ? left : right).push(name);
         } else {
-          if (raft.length >= 1) return;
+          if (raft.length >= 1) {
+            statusDiv.textContent = "Cannot take more!";
+            return;
+          }
           if (location !== raftSide) return;
           if (location === "left") left = left.filter((i) => i !== name);
           if (location === "right") right = right.filter((i) => i !== name);
@@ -237,21 +302,17 @@
 
       function checkNivlekAloneEvernight() {
         if (left.includes("Nivlek") && left.length === 1) {
-          alert("🌀 Nivlek was left alone in Nation of Evernight. Try again?");
-          location.reload();
+          showDeathMessage(
+            "🌀 Nivlek was left alone in Nation of Evernight. Try again?",
+          );
           return true;
         }
         return false;
       }
 
       function moveRaft() {
+        if (dead) return;
         moveCount++;
-
-        if (moveCount > maxMove) {
-          alert("⏳ You took too long. Everyone died.");
-          location.reload();
-          return;
-        }
 
         const wassimLeavesLeft = raftSide === "left";
         const wassimLeavesRight = raftSide === "right";
@@ -260,21 +321,23 @@
         const target = raftSide === "left" ? left : right;
         raft.forEach((i) => target.push(i));
         raft = [];
+        render();
 
+        if (moveCount > maxMove) {
+          showDeathMessage("⏳ You took too long. Everyone died.");
+          return;
+        }
         if (
           invalidState(left, !wassimLeavesLeft) ||
           invalidState(right, !wassimLeavesRight)
         ) {
-          alert("💀 Someone got killed. Try again?");
-          location.reload();
+          showDeathMessage("💀 Someone got killed. Try again?");
           return;
         }
-
         if (checkNivlekAloneEvernight()) return;
 
         statusDiv.textContent =
           right.length === 3 ? "🎉 CoI-Completed is saved!" : "";
-        render();
       }
 
       window.addEventListener("resize", render);
@@ -282,6 +345,3 @@
     </script>
   </body>
 </html>
-
-
-
