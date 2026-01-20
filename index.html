@@ -226,7 +226,9 @@
       function showDeathMessage(message) {
         dead = true;
         deathText.textContent = message;
-        deathOverlay.classList.add("show");
+        setTimeout(() => {
+          deathOverlay.classList.add("show");
+        }, 500);
       }
       deathButton.onclick = () => location.reload();
 
@@ -345,3 +347,4 @@
     </script>
   </body>
 </html>
+
