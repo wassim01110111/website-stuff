@@ -10,20 +10,35 @@
       ⬅ Back to Riddle Selection
     </button>
     <h1>Coi-Completed Emergency</h1>
-    <p style="text-align: center; max-width: 650px">
-      Move everyone from Coi-Completed to Mod-Support while obeying the
-      following rules: <br />
-      Nets, Wingy, Niv, Wassim take 1, 2, 5 and 8 minutes respectively to
-      navigate the raft <br />
-      No more than <b>two people</b> can ride the raft at the same time.<br />
-      There must be at least <b>one person</b> on the raft in order for it to
-      move.<br />
-      There cannot be more than two people on the raft at any time, and when two
-      people use the raft, they must
-      <b>move at the slower person's pace</b>.<br />
-      The raft is in bad shape, so finish in
-      <span class="maxMove"></span> minutes or it will break.<br />
-    </p>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          Move everyone from <b>Coi-Completed</b> to <b>Mod-Support</b> while
+          obeying the following rules:
+        </li>
+        <li>
+          Nets, Wingy, Niv, and Wassim take 1, 2, 5, and 8 minutes respectively
+          to navigate the raft.
+        </li>
+        <li>
+          No more than <b>two people</b> can ride the raft at the same time.
+        </li>
+        <li>
+          There must be at least <b>one person</b> on the raft in order for it
+          to move.
+        </li>
+        <li>
+          When two people use the raft, they must
+          <b>move at the slower person's pace</b>.
+        </li>
+        <li>
+          The raft is in bad shape, so finish in
+          <span class="maxMove"></span> minutes or it will break.
+        </li>
+      </ul>
+    </div>
+
     <div class="status" id="status"></div>
     <p>
       Time spent: <span id="moveCount">0</span> / <span class="maxMove"></span>
