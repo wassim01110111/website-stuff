@@ -123,6 +123,20 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  cursor: pointer;
+}
+.character:hover {
+  transform: scale(1.15) translateY(-5px);
+}
+
+.character:hover .name {
+  text-shadow:
+    0 0 8px #22c55e,
+    0 0 15px #a7f3d0;
+  color: #22c55e;
 }
 
 .item {
@@ -134,7 +148,11 @@ h1 {
   object-fit: cover;
   background: #020617;
 }
-
+.item:hover {
+  box-shadow:
+    0 8px 20px rgba(34, 197, 94, 0.6),
+    0 0 15px rgba(34, 197, 94, 0.4);
+}
 .name {
   font-size: 12px;
   background: #020617;
