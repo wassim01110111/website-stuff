@@ -14,17 +14,8 @@ body {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 20px;
-}
-
-.title-header button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  z-index: 2;
 }
 
 .title-header span {
@@ -39,6 +30,16 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   z-index: 1;
+}
+
+.title-header button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 2;
 }
 h1 {
   margin-bottom: 10px;
