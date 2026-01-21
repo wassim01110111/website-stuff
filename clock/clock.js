@@ -195,6 +195,10 @@ document.getElementById("down").addEventListener("click", () => move(2));
 document.getElementById("left").addEventListener("click", () => move(3));
 function undo() {
   if (gameOver) return;
+  if (undoCount < 1) {
+    statusDiv.textContent = "Out of undo's!";
+    return;
+  }
   undoCount--;
   undoButton.textContent = `Undo (${undoCount} left)`;
   if (!history.length) return;
