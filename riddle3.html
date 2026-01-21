@@ -83,7 +83,12 @@
 
       deathButton.onclick = () => location.reload();
       winButton.onclick = () => location.reload();
-
+      function scrollBottom() {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      }
       const MAX_TIME = 15;
       document
         .querySelectorAll(".maxMove")
@@ -120,6 +125,8 @@
 
         raftEl.className = "raft " + raftSide;
         timeSpan.textContent = elapsedTime;
+
+        scrollBottom();
       }
 
       function makeItem(name, location) {
