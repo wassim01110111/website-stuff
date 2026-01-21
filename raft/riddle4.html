@@ -54,8 +54,8 @@
       <button id="deathButton">Try Again</button>
     </div>
     <div id="winOverlay">
-      <div id="winText">💀 Someone got killed!</div>
-      <button id="winButton">Try Again</button>
+      <div id="winText"></div>
+      <button id="winButton">Try another challenge</button>
     </div>
     <script>
       const deathOverlay = document.getElementById("deathOverlay");
@@ -82,7 +82,7 @@
         });
       }
       deathButton.onclick = () => location.reload();
-      winButton.onclick = () => location.reload();
+      winButton.onclick = () => (location = "../index.html");
 
       const maxMove = 11;
       document
