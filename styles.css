@@ -12,6 +12,40 @@ body {
 h1 {
   margin-bottom: 10px;
 }
+.rules-container {
+  max-width: 700px;
+  margin: 30px auto;
+  text-align: left;
+  background: rgba(30, 41, 59, 0.8);
+  padding: 20px 25px;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.rules-container h2 {
+  text-align: center;
+  color: #facc15;
+  margin-bottom: 15px;
+  font-size: 24px;
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.5);
+}
+
+.rules {
+  list-style: inside disc;
+  padding-left: 0;
+  color: #e5e7eb;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.rules li {
+  margin-bottom: 10px;
+}
+
+.rules li b {
+  color: #22c55e;
+}
 
 .banks {
   position: relative;
