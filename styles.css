@@ -13,7 +13,7 @@ h1 {
   margin-bottom: 10px;
 }
 .rules-container {
-  max-width: 700px;
+  max-width: 100vw;
   margin: 30px auto;
   text-align: left;
   background: rgba(30, 41, 59, 0.8);
@@ -27,7 +27,7 @@ h1 {
   text-align: center;
   color: #facc15;
   margin-bottom: 15px;
-  font-size: 24px;
+  font-size: 35px;
   text-shadow: 0 0 8px rgba(250, 204, 21, 0.5);
 }
 
@@ -36,7 +36,7 @@ h1 {
   padding-left: 0;
   color: #e5e7eb;
   line-height: 1.6;
-  font-size: 16px;
+  font-size: 25px;
 }
 
 .rules li {
@@ -108,6 +108,28 @@ h1 {
   width: 110px;
   border-radius: 12px;
   margin-top: 6px;
+}
+.bank button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px 0;
+  font-size: 35px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.bank button:hover {
+  background: linear-gradient(135deg, #22c55e, #facc15);
+  color: #052e16;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
 }
 
 .images {
@@ -295,4 +317,44 @@ button {
 #deathOverlay button:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
+}
+
+@media (orientation: portrait) {
+  .banks {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .bank.left,
+  .bank.right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 280px;
+  }
+
+  .bank.right {
+    top: 48vh;
+  }
+  .raft.left,
+  .raft.right {
+    position: absolute;
+    left: auto;
+    right: 0;
+    width: 220px;
+  }
+
+  .raft.left {
+    top: 0;
+  }
+  .raft.right {
+    top: 48vh;
+  }
+
+  .raft {
+    transition: top 0.9s ease-in-out;
+  }
 }
