@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Avoid the Ban</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <button onclick="location.href = 'index.html'">
+      ⬅ Back to Riddle Selection
+    </button>
+    <h1>Avoid the Ban</h1>
+    <p style="text-align: center; max-width: 650px">
+      Move the Nivleks and Nets from Coi-Completed to Mod-Support while obeying
+      the following rules: <br />
+      No more than <b>two people</b> can ride the raft at the same time.<br />
+      There must be at least <b>one person</b> on the raft in order for it to
+      move.<br />
+      If more <b>Nets than Nivleks</b> stay on either side of the channels, they
+      will get banned and you'll have to start over.<br />
+      Finish in <span class="maxMove"></span> moves or they will all get
+      banned.<br />
+    </p>
+    <div class="status" id="status"></div>
+    <p>Moves: <span id="moveCount">0</span> / <span class="maxMove"></span></p>
+
+    <div class="banks">
+      <div class="bank left" id="nationEvernight">
+        <h2>#coi-completed</h2>
+        <div class="images" id="leftImages"></div>
+      </div>
+
+      <div class="bank right" id="sefirahCastle">
+        <h2>#mod-support</h2>
+        <div class="images" id="rightImages"></div>
+      </div>
+
+      <div id="raft" class="raft left">
+        <h3>Raft</h3>
+        <div class="images" id="raftImages"></div>
+        <button onclick="moveRaft()">Move Raft</button>
+      </div>
+    </div>
+    <div id="deathOverlay">
+      <div id="deathText">💀 Someone got killed!</div>
+      <button id="deathButton">Try Again</button>
+    </div>
+    <div id="winOverlay">
+      <div id="winText">💀 Someone got killed!</div>
+      <button id="winButton">Try Again</button>
+    </div>
+    <script>
+      const deathOverlay = document.getElementById("deathOverlay");
+      const deathText = document.getElementById("deathText");
+      const deathButton = document.getElementById("deathButton");
+      let gameOver = false;
+
+      function showDeathMessage(message) {
+        gameOver = true;
+        deathText.textContent = message;
+        setTimeout(() => deathOverlay.classList.add("show"), 500);
+      }
+
+      deathButton.onclick = () => location.reload();
+
+      const maxMove = 15;
+      document
+        .querySelectorAll(".maxMove")
+        .forEach((el) => (el.textContent = maxMove));
+
+      const items = { Niv: "niv.jpg", Nets: "nets.jpg" };
+      let right = [];
+      let raft = [];
+      let raftSide = "left";
+      let moveCount = 0;
+      let left = [
+        { id: 1, type: "Niv" },
+        { id: 2, type: "Niv" },
+        { id: 3, type: "Niv" },
+        { id: 4, type: "Nets" },
+        { id: 5, type: "Nets" },
+        { id: 6, type: "Nets" },
+      ];
+
+      function makeItem(character, location) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "character";
+        const img = document.createElement("img");
+        img.src = items[character.type];
+        img.className = "item";
+        img.onclick = () => toggleItem(character.id, location);
+        const label = document.createElement("div");
+        label.className = "name";
+        label.textContent = character.type;
+        wrapper.appendChild(img);
+        wrapper.appendChild(label);
+        return wrapper;
+      }
+
+      const leftDiv = document.getElementById("leftImages");
+      const rightDiv = document.getElementById("rightImages");
+      const raftDiv = document.getElementById("raftImages");
+      const statusDiv = document.getElementById("status");
+      const raftEl = document.getElementById("raft");
+      const moveSpan = document.getElementById("moveCount");
+
+      function render() {
+        leftDiv.innerHTML = "";
+        rightDiv.innerHTML = "";
+        raftDiv.innerHTML = "";
+        left.forEach((i) => leftDiv.appendChild(makeItem(i, "left")));
+        right.forEach((i) => rightDiv.appendChild(makeItem(i, "right")));
+        raft.forEach((i) => raftDiv.appendChild(makeItem(i, "raft")));
+        raftEl.className = "raft " + raftSide;
+        moveSpan.textContent = moveCount;
+      }
+
+      function toggleItem(id, location) {
+        if (gameOver) return;
+
+        let source, dest;
+        if (location === "left") source = left;
+        else if (location === "right") source = right;
+        else source = raft;
+
+        const charIndex = source.findIndex((c) => c.id === id);
+        if (charIndex === -1) return;
+        const character = source.splice(charIndex, 1)[0];
+
+        if (location === "raft") {
+          // Moving back to bank
+          dest = raftSide === "left" ? left : right;
+        } else {
+          // Moving to raft
+          if (raft.length >= 2) {
+            statusDiv.textContent = "🚫 Raft can carry max 2!";
+            source.push(character); // put back
+            return;
+          }
+          if (location !== raftSide) {
+            source.push(character); // put back
+            return;
+          }
+          dest = raft;
+        }
+
+        dest.push(character);
+        render();
+      }
+
+      function invalidBank(bank) {
+        const niv = bank.filter((c) => c.type === "Niv").length;
+        const nets = bank.filter((c) => c.type === "Nets").length;
+        return nets > niv && niv > 0;
+      }
+
+      function moveRaft() {
+        if (gameOver) return;
+        if (raft.length === 0) {
+          statusDiv.textContent =
+            "🚣‍♂️ You need at least one person on the raft!";
+          return;
+        }
+
+        moveCount++;
+        raftSide = raftSide === "left" ? "right" : "left";
+        const target = raftSide === "left" ? left : right;
+        raft.forEach((i) => target.push(i));
+        raft = [];
+        render();
+
+        if (moveCount > maxMove) {
+          showDeathMessage("⏳ You took too long. Game over.");
+          return;
+        }
+
+        if (invalidBank(left) || invalidBank(right)) {
+          showDeathMessage("💀 Nets outnumbered Nivs. Try again!");
+          return;
+        }
+
+        if (right.length === 6) {
+          statusDiv.textContent = "🎉 Nekros hasn't banned anyone!";
+          gameOver = true;
+          return;
+        }
+
+        statusDiv.textContent = "";
+      }
+
+      window.addEventListener("resize", render);
+      render();
+    </script>
+  </body>
+</html>
