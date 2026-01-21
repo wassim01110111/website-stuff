@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Two men and three lurkers</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <button onclick="location.href = 'index.html'">
+      ⬅ Back to Riddle Selection
+    </button>
+    <h1>Two men and three lurkers</h1>
+    <div class="rules-container">
+      <h2>Puzzle Rules</h2>
+      <ul class="rules">
+        <li>Nets and Nivlek are of equal weight.</li>
+        <li>There are three cloned Wingys, each of half their weight.</li>
+        <li>They all wish to cross the <b>River of Eternal Darkness</b>.</li>
+        <li>
+          The raft can only carry the weight of <b>one adult</b> at a time.
+        </li>
+        <li>
+          They are in a hurry and need to finish in
+          <span class="maxMove"></span> moves.
+        </li>
+      </ul>
+    </div>
+
+    <div class="status" id="status"></div>
+    <p>Moves: <span id="moveCount">0</span> / <span class="maxMove"></span></p>
+
+    <div class="banks">
+      <div class="bank left" id="nationEvernight">
+        <h2>Loen Kingdom</h2>
+        <div class="images" id="leftImages"></div>
+      </div>
+
+      <div class="bank right" id="sefirahCastle">
+        <h2>Intis Republic</h2>
+        <div class="images" id="rightImages"></div>
+      </div>
+
+      <div id="raft" class="raft left">
+        <h3>Raft</h3>
+        <div class="images" id="raftImages"></div>
+        <button onclick="moveRaft()">Move Raft</button>
+      </div>
+    </div>
+    <div id="deathOverlay">
+      <div id="deathText">💀 Someone got killed!</div>
+      <button id="deathButton">Try Again</button>
+    </div>
+    <div id="winOverlay">
+      <div id="winText">💀 Someone got killed!</div>
+      <button id="winButton">Try Again</button>
+    </div>
+    <script>
+      const deathOverlay = document.getElementById("deathOverlay");
+      const deathText = document.getElementById("deathText");
+      const deathButton = document.getElementById("deathButton");
+      let gameOver = false;
+      const winOverlay = document.getElementById("winOverlay");
+      const winText = document.getElementById("winText");
+      const winButton = document.getElementById("winButton");
+      function showwinMessage(message) {
+        gameOver = true;
+        winText.textContent = message;
+        winOverlay.classList.add("show");
+      }
+      function showDeathMessage(message) {
+        gameOver = true;
+        deathText.textContent = message;
+        setTimeout(() => deathOverlay.classList.add("show"), 500);
+      }
+
+      deathButton.onclick = () => location.reload();
+      winButton.onclick = () => location.reload();
+
+      const maxMove = 11;
+      document
+        .querySelectorAll(".maxMove")
+        .forEach((el) => (el.textContent = maxMove));
+
+      const items = {
+        Niv: "niv.jpg",
+        Nets: "nets.jpg",
+        Wingy: "wing.jpg",
+      };
+
+      let left = [
+        { id: 1, type: "Niv", weight: 2 },
+        { id: 2, type: "Nets", weight: 2 },
+        { id: 3, type: "Wingy", weight: 1 },
+        { id: 4, type: "Wingy", weight: 1 },
+        { id: 5, type: "Wingy", weight: 1 },
+      ];
+
+      let right = [];
+      let raft = [];
+      let raftSide = "left";
+      let moveCount = 0;
+
+      function makeItem(character, location) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "character";
+
+        const img = document.createElement("img");
+        img.src = items[character.type];
+        img.className = "item";
+        img.onclick = () => toggleItem(character.id, location);
+
+        const label = document.createElement("div");
+        label.className = "name";
+        label.textContent = character.type;
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(label);
+        return wrapper;
+      }
+
+      const leftDiv = document.getElementById("leftImages");
+      const rightDiv = document.getElementById("rightImages");
+      const raftDiv = document.getElementById("raftImages");
+      const statusDiv = document.getElementById("status");
+      const raftEl = document.getElementById("raft");
+      const moveSpan = document.getElementById("moveCount");
+
+      function render() {
+        leftDiv.innerHTML = "";
+        rightDiv.innerHTML = "";
+        raftDiv.innerHTML = "";
+
+        left.forEach((i) => leftDiv.appendChild(makeItem(i, "left")));
+        right.forEach((i) => rightDiv.appendChild(makeItem(i, "right")));
+        raft.forEach((i) => raftDiv.appendChild(makeItem(i, "raft")));
+
+        raftEl.className = "raft " + raftSide;
+        moveSpan.textContent = moveCount;
+      }
+
+      function toggleItem(id, location) {
+        if (gameOver) return;
+
+        let source;
+        if (location === "left") source = left;
+        else if (location === "right") source = right;
+        else source = raft;
+
+        const index = source.findIndex((c) => c.id === id);
+        if (index === -1) return;
+
+        const character = source.splice(index, 1)[0];
+        let dest;
+
+        if (location === "raft") {
+          dest = raftSide === "left" ? left : right;
+          dest.push(character);
+          render();
+          return;
+        }
+
+        if (location !== raftSide) {
+          source.push(character);
+          return;
+        }
+
+        const raftWeight = raft.reduce((sum, c) => sum + c.weight, 0);
+
+        if (raftWeight + character.weight > 2) {
+          statusDiv.textContent = "🚫 Too heavy!";
+          source.push(character);
+          return;
+        }
+
+        raft.push(character);
+        statusDiv.textContent = "";
+        render();
+      }
+
+      function invalidBank(bank) {
+        const niv = bank.filter((c) => c.type === "Niv").length;
+        const nets = bank.filter((c) => c.type === "Nets").length;
+        return nets > niv && niv > 0;
+      }
+
+      function moveRaft() {
+        if (gameOver) return;
+
+        if (raft.length === 0) {
+          statusDiv.textContent =
+            "🚣‍♂️ You need at least one person on the raft!";
+          return;
+        }
+
+        moveCount++;
+        raftSide = raftSide === "left" ? "right" : "left";
+
+        const target = raftSide === "left" ? left : right;
+        raft.forEach((c) => target.push(c));
+        raft = [];
+
+        render();
+
+        if (moveCount > maxMove) {
+          showDeathMessage("⏳ You took too long. Game over.");
+          return;
+        }
+
+        if (right.length === 5) {
+          showwinMessage("Everyone ");
+          gameOver = true;
+          return;
+        }
+
+        statusDiv.textContent = "";
+      }
+
+      window.addEventListener("resize", render);
+      render();
+    </script>
+  </body>
+</html>
