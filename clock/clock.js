@@ -3,6 +3,7 @@ const gridElement = document.getElementById("grid");
 const undoButton = document.getElementById("undo");
 const deathOverlay = document.createElement("div");
 deathOverlay.id = "deathOverlay";
+let gameOver = false;
 document
   .querySelectorAll(".maxMove")
   .forEach((el) => (el.textContent = maxMove));
@@ -130,6 +131,7 @@ function rotateClocks() {
 }
 
 function move(dir) {
+  if (gameOver) return;
   statusDiv.textContent = "";
   const cell = grid[player.y][player.x];
 
@@ -151,6 +153,7 @@ function move(dir) {
 
   if (ny < 0 || ny >= grid.length || nx < 0 || nx >= grid[0].length) {
     showDeathMessage("You accidentally lost connection to Sefirah Castle.");
+    gameOver = true;
     return;
   }
 
@@ -160,10 +163,13 @@ function move(dir) {
   const landingCell = grid[player.y][player.x];
   if (landingCell.type === "win") {
     showwinMessage("Congratulations! You stole Sefirah Castle!");
+    gameOver = true;
   } else if (landingCell.type === "death") {
     showDeathMessage("Klein killed you!");
+    gameOver = true;
   } else if (moveCount > maxMove) {
     showDeathMessage("Klein caught you!");
+    gameOver = true;
   }
   rotateClocks();
   render();
@@ -188,6 +194,7 @@ document.getElementById("right").addEventListener("click", () => move(1));
 document.getElementById("down").addEventListener("click", () => move(2));
 document.getElementById("left").addEventListener("click", () => move(3));
 function undo() {
+  if (gameOver) return;
   undoCount--;
   undoButton.textContent = `Undo (${undoCount} left)`;
   if (!history.length) return;
