@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Trip to Sefirah Castle</title>
+    <title>coi-completed emergency</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -126,12 +126,6 @@
         border: 1px solid #334155;
         border-radius: 8px;
       }
-
-      .status {
-        margin-top: 20px;
-        font-weight: bold;
-      }
-      /* WIN OVERLAY */
       #winOverlay {
         position: fixed;
         top: 0;
@@ -143,7 +137,7 @@
           rgba(16, 185, 129, 0.25),
           rgba(15, 23, 42, 0.95)
         );
-        color: #facc15; /* gold */
+        color: #facc15;
         font-family: "Arial Black", Arial, sans-serif;
         font-size: 32px;
         font-weight: bold;
@@ -165,7 +159,6 @@
         opacity: 1;
       }
 
-      /* WIN TEXT EFFECT */
       #winOverlay h1 {
         margin-bottom: 15px;
         text-shadow:
@@ -207,6 +200,10 @@
         box-shadow: 0 6px 30px rgba(250, 204, 21, 0.8);
       }
 
+      .status {
+        margin-top: 20px;
+        font-weight: bold;
+      }
       #deathOverlay {
         position: fixed;
         top: 0;
@@ -256,36 +253,40 @@
     </style>
   </head>
   <body>
-    <h1>Trip to Sefirah Castle</h1>
+    <h1>coi-completed emergency</h1>
     <p style="text-align: center; max-width: 650px">
-      Help Wassim move Wingy, Nivlek, and Nets from the Nation of Evernight to
-      Sefirah Castle while obeying the following rules: <br />
-      Nets and Nivlek cannot stand each other and shouldn't be left alone.<br />
-      Wingy and Nets cannot stand each other and shouldn't be left alone.<br />
-      Leaving Nivlek alone in Nation of Evernight will remove any hint of sanity
-      he had.<br />
-      Finish in <span class="maxMove"></span> moves or they will all starve.<br />
-      You can only take <b>1 additional person</b> on the raft per move
-      (everyone is too fat)
+      Move everyone from Coi-Completed to Mod-Support while obeying the
+      following rules: <br />
+      Nets, Wingy, Niv, Wassim take 1, 2, 5 and 8 minutes respectively to
+      navigate the raft <br />
+      No more than <b>two people</b> can ride the raft at the same time.<br />
+      There must be at least <b>one person</b> on the raft in order for it to
+      move.<br />
+      There cannot be more than two people on the raft at any time, and when two
+      people use the raft, they must
+      <b>move at the slower person's pace</b>.<br />
+      The raft is in bad shape, so finish in
+      <span class="maxMove"></span> minutes or it will break.<br />
     </p>
     <div class="status" id="status"></div>
-    <p>Moves: <span id="moveCount">0</span> / <span class="maxMove"></span></p>
+    <p>
+      Time spent: <span id="moveCount">0</span> / <span class="maxMove"></span>
+    </p>
 
     <div class="banks">
       <div class="bank left" id="nationEvernight">
-        <h2>Nation of Evernight</h2>
+        <h2>#coi-completed</h2>
         <div class="images" id="leftImages"></div>
       </div>
 
       <div class="bank right" id="sefirahCastle">
-        <h2>Sefirah Castle</h2>
+        <h2>#mod-support</h2>
         <div class="images" id="rightImages"></div>
       </div>
 
       <div id="raft" class="raft left">
         <h3>Raft</h3>
         <div class="images" id="raftImages"></div>
-        <img src="wassim.jpg" alt="Wassim" class="wassim" />
         <button onclick="moveRaft()">Move Raft</button>
       </div>
     </div>
@@ -297,69 +298,71 @@
       <div id="winText">💀 Someone got killed!</div>
       <button id="winButton">Try Again</button>
     </div>
-
     <script>
       const deathOverlay = document.getElementById("deathOverlay");
       const deathText = document.getElementById("deathText");
       const deathButton = document.getElementById("deathButton");
-      let gameOver = false;
+
       const winOverlay = document.getElementById("winOverlay");
       const winText = document.getElementById("winText");
       const winButton = document.getElementById("winButton");
 
-      function showwinMessage(message) {
-        gameOver = true;
-        winText.textContent = message;
-        winOverlay.classList.add("show");
-      }
-      function showDeathMessage(message) {
-        gameOver = true;
-        deathText.textContent = message;
-        setTimeout(() => {
-          deathOverlay.classList.add("show");
-        }, 500);
-      }
+      let gameOver = false;
+
       deathButton.onclick = () => location.reload();
       winButton.onclick = () => location.reload();
-      const maxMove = 10;
-      document.querySelectorAll(".maxMove").forEach((el) => {
-        el.textContent = maxMove;
-      });
-      const items = { Wingy: "wing.jpg", Nets: "nets.jpg", Nivlek: "niv.jpg" };
-      let left = Object.keys(items),
-        right = [],
-        raft = [],
-        raftSide = "left";
-      let moveCount = 0;
+
+      const MAX_TIME = 15;
+      document
+        .querySelectorAll(".maxMove")
+        .forEach((el) => (el.textContent = MAX_TIME));
+      let elapsedTime = 0;
+
+      const people = {
+        Nets: { img: "nets.jpg", time: 1 },
+        Wingy: { img: "wing.jpg", time: 2 },
+        Niv: { img: "niv.jpg", time: 5 },
+        Wassim: { img: "wassim.jpg", time: 8 },
+      };
+
+      let left = Object.keys(people);
+      let right = [];
+      let raft = [];
+      let raftSide = "left";
 
       const leftDiv = document.getElementById("leftImages");
       const rightDiv = document.getElementById("rightImages");
       const raftDiv = document.getElementById("raftImages");
-      const statusDiv = document.getElementById("status");
       const raftEl = document.getElementById("raft");
-      const moveSpan = document.getElementById("moveCount");
+      const statusDiv = document.getElementById("status");
+      const timeSpan = document.getElementById("moveCount");
 
       function render() {
         leftDiv.innerHTML = "";
         rightDiv.innerHTML = "";
         raftDiv.innerHTML = "";
-        left.forEach((i) => leftDiv.appendChild(makeItem(i, "left")));
-        right.forEach((i) => rightDiv.appendChild(makeItem(i, "right")));
-        raft.forEach((i) => raftDiv.appendChild(makeItem(i, "raft")));
+
+        left.forEach((p) => leftDiv.appendChild(makeItem(p, "left")));
+        right.forEach((p) => rightDiv.appendChild(makeItem(p, "right")));
+        raft.forEach((p) => raftDiv.appendChild(makeItem(p, "raft")));
+
         raftEl.className = "raft " + raftSide;
-        moveSpan.textContent = moveCount;
+        timeSpan.textContent = elapsedTime;
       }
 
       function makeItem(name, location) {
         const wrapper = document.createElement("div");
         wrapper.className = "character";
+
         const img = document.createElement("img");
-        img.src = items[name];
+        img.src = people[name].img;
         img.className = "item";
         img.onclick = () => toggleItem(name, location);
+
         const label = document.createElement("div");
         label.className = "name";
-        label.textContent = name;
+        label.textContent = `${name}: ${people[name].time} mins`;
+
         wrapper.appendChild(img);
         wrapper.appendChild(label);
         return wrapper;
@@ -367,71 +370,65 @@
 
       function toggleItem(name, location) {
         if (gameOver) return;
+
         if (location === "raft") {
-          raft = raft.filter((i) => i !== name);
+          raft = raft.filter((p) => p !== name);
           (raftSide === "left" ? left : right).push(name);
         } else {
-          if (raft.length >= 1) {
-            statusDiv.textContent = "Cannot take more!";
+          if (raft.length >= 2) {
+            statusDiv.textContent = "Raft can only hold 2 people.";
             return;
           }
           if (location !== raftSide) return;
-          if (location === "left") left = left.filter((i) => i !== name);
-          if (location === "right") right = right.filter((i) => i !== name);
+
+          if (location === "left") left = left.filter((p) => p !== name);
+          if (location === "right") right = right.filter((p) => p !== name);
+
           raft.push(name);
         }
+
+        statusDiv.textContent = "";
         render();
-      }
-
-      function invalidState(bank, wassimPresent) {
-        if (wassimPresent) return false;
-        const w = bank.includes("Wingy");
-        const n = bank.includes("Nets");
-        const v = bank.includes("Nivlek");
-        return (w && n && !v) || (n && v && !w);
-      }
-
-      function checkNivlekAloneEvernight() {
-        if (left.includes("Nivlek") && left.length === 1) {
-          showDeathMessage(
-            "🌀 Nivlek was left alone in Nation of Evernight. Try again?",
-          );
-          return true;
-        }
-        return false;
       }
 
       function moveRaft() {
         if (gameOver) return;
-        moveCount++;
 
-        const wassimLeavesLeft = raftSide === "left";
-        const wassimLeavesRight = raftSide === "right";
+        if (raft.length === 0) {
+          statusDiv.textContent = "At least one person must be on the raft.";
+          return;
+        }
+
+        const tripTime = Math.max(...raft.map((p) => people[p].time));
+        elapsedTime += tripTime;
+
+        if (elapsedTime > MAX_TIME) {
+          showDeathMessage("⏳ Time exceeded 15 minutes. The raft broke down.");
+          return;
+        }
 
         raftSide = raftSide === "left" ? "right" : "left";
         const target = raftSide === "left" ? left : right;
-        raft.forEach((i) => target.push(i));
+        raft.forEach((p) => target.push(p));
         raft = [];
+
         render();
 
-        if (moveCount > maxMove) {
-          showDeathMessage("⏳ You took too long. Everyone died.");
-          return;
+        if (right.length === 4) {
+          showWinMessage("🎉 Everyone crossed safely in time!");
         }
-        if (
-          invalidState(left, !wassimLeavesLeft) ||
-          invalidState(right, !wassimLeavesRight)
-        ) {
-          showDeathMessage("💀 Someone got killed. Try again?");
-          return;
-        }
-        if (checkNivlekAloneEvernight()) return;
-        if (right.length === 3) {
-          showwinMessage("🎉 CoI-Completed is saved!");
-          gameOver = true;
-        } else {
-          statusDiv.textContent = "";
-        }
+      }
+
+      function showWinMessage(msg) {
+        gameOver = true;
+        winText.textContent = msg;
+        winOverlay.classList.add("show");
+      }
+
+      function showDeathMessage(msg) {
+        gameOver = true;
+        deathText.textContent = msg;
+        deathOverlay.classList.add("show");
       }
 
       window.addEventListener("resize", render);
