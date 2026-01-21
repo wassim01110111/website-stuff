@@ -391,8 +391,7 @@ button {
   }
 }
 #placeholder {
-  min-height: 50px;
-
+  min-height: 200px;
   margin: 20px 0;
 }
 #gamepad {
