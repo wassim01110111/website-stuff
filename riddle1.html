@@ -76,6 +76,12 @@
       const winText = document.getElementById("winText");
       const winButton = document.getElementById("winButton");
 
+      function scrollBottom() {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      }
       function showwinMessage(message) {
         gameOver = true;
         winText.textContent = message;
@@ -117,6 +123,7 @@
         raft.forEach((i) => raftDiv.appendChild(makeItem(i, "raft")));
         raftEl.className = "raft " + raftSide;
         moveSpan.textContent = moveCount;
+        scrollBottom();
       }
 
       function makeItem(name, location) {
