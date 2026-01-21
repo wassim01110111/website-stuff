@@ -390,6 +390,11 @@ button {
     transition: top 0.9s ease-in-out;
   }
 }
+#placeholder {
+  min-height: 50px;
+
+  margin: 20px 0;
+}
 #gamepad {
   position: fixed;
   bottom: 20px;
