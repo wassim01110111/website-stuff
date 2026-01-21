@@ -1,0 +1,81 @@
+#grid {
+  display: grid;
+  margin: 40px auto;
+  width: max-content;
+  gap: 8px;
+}
+
+.cell {
+  width: 120px;
+  height: 120px;
+  border: 1px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.solid {
+  background: #555;
+}
+.death {
+  background: #ff0000;
+}
+
+.clock {
+  position: relative;
+  border-radius: 50%;
+  background: black;
+  border: 4px solid white;
+}
+
+.clock.purple {
+  border-color: purple;
+}
+
+.hand {
+  position: absolute;
+  width: 4px;
+  height: 50px;
+  background: currentColor;
+  transform-origin: bottom center;
+  top: 10px;
+  z-index: 11;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+.hand.active {
+  animation: handPulse 1s infinite alternate;
+}
+
+@keyframes handPulse {
+  0% {
+    box-shadow:
+      0 0 5px white,
+      0 0 10px white;
+  }
+  100% {
+    box-shadow:
+      0 0 15px white,
+      0 0 30px white;
+  }
+}
+.player {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.winblock {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
