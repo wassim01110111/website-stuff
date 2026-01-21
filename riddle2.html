@@ -54,7 +54,15 @@
       const deathText = document.getElementById("deathText");
       const deathButton = document.getElementById("deathButton");
       let gameOver = false;
+      const winOverlay = document.getElementById("winOverlay");
+      const winText = document.getElementById("winText");
+      const winButton = document.getElementById("winButton");
 
+      function showwinMessage(message) {
+        gameOver = true;
+        winText.textContent = message;
+        winOverlay.classList.add("show");
+      }
       function showDeathMessage(message) {
         gameOver = true;
         deathText.textContent = message;
@@ -62,7 +70,7 @@
       }
 
       deathButton.onclick = () => location.reload();
-
+      winButton.onclick = () => location.reload();
       const maxMove = 15;
       document
         .querySelectorAll(".maxMove")
@@ -180,7 +188,7 @@
         }
 
         if (right.length === 6) {
-          statusDiv.textContent = "🎉 Nekros hasn't banned anyone!";
+          showwinMessage("🎉 Nekros hasn't banned anyone!");
           gameOver = true;
           return;
         }
