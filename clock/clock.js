@@ -168,7 +168,7 @@ function move(dir) {
     showDeathMessage("Klein killed you!");
     gameOver = true;
   } else if (moveCount > maxMove) {
-    showDeathMessage("Klein caught you!");
+    showDeathMessage("Klein caught you! You weren't fast enough...");
     gameOver = true;
   }
   rotateClocks();
