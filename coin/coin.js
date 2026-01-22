@@ -175,6 +175,7 @@ createBoard();
 
 document.getElementById("undo").addEventListener("click", () => {
   if (history.length > 0) {
+    updateMoveCount(true);
     const prev = history.pop();
     for (let i = 0; i < rows; i++)
       for (let j = 0; j < (boardMatrix[i]?.length || 0); j++)

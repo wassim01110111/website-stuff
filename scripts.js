@@ -69,8 +69,12 @@ function loadPlayerData() {
   );
 }
 
-function updateMoveCount() {
-  moveCount++;
+function updateMoveCount(neg = false) {
+  if (neg) {
+    moveCount--;
+  } else {
+    moveCount++;
+  }
   moveSpan.textContent = moveCount;
 }
 const playerData = loadPlayerData();
