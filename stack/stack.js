@@ -20,8 +20,7 @@ for (const key in spots) {
         !topBook ||
         parseInt(selectedBook.dataset.size) < parseInt(topBook.dataset.size)
       ) {
-        moveCount++;
-        moveSpan.textContent = moveCount;
+        updateMoveCount();
         statusDiv.textContent = "";
         spots[key].appendChild(selectedBook);
         if (key === "right" && spots.right.children.length === numberBooks) {

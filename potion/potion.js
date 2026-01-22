@@ -58,8 +58,7 @@ function pourLiquid(from, to) {
     selectedContainer = null;
     return;
   }
-  moveCount++;
-  moveSpan.textContent = moveCount;
+  updateMoveCount();
   if (moveCount > maxMove) {
     showDeathMessage("The potion was a mess and you lost control!");
   }

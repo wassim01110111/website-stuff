@@ -26,6 +26,10 @@ const xpFiles = {
   "stack1.html": { xpGained: 3, title: "Stacking Volumes" },
   "stack2.html": { xpGained: 4, title: "Stacking LoTM" },
   "stack3.html": { xpGained: 6, title: "Stacking CoI" },
+  "placement1.html": { xpGained: 3, title: "Tarot Divination 1" },
+  "placement2.html": { xpGained: 4, title: "Tarot Divination 2" },
+  "placement3.html": { xpGained: 5, title: "Tarot Divination 3" },
+  "placement4.html": { xpGained: 6, title: "Tarot Divination 4" },
 };
 const levels = {
   0: { name: "Mundane Human", xp_max: 1 },
@@ -43,7 +47,7 @@ const levels = {
 
   11: { name: "Above the Sequences", xp_max: 52 },
 };
-if (htmlFile[htmlFile]) {
+if (xpFiles[htmlFile]) {
   const pageTitle = xpFiles[htmlFile].title;
   titleDoc.textContent = pageTitle;
   document.title = pageTitle;
@@ -60,6 +64,11 @@ function loadPlayerData() {
       },
     }
   );
+}
+
+function updateMoveCount() {
+  moveCount++;
+  moveSpan.textContent = moveCount;
 }
 const playerData = loadPlayerData();
 console.log(playerData);

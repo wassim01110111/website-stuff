@@ -1,0 +1,32 @@
+#cards {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.card {
+  width: 200px;
+  cursor: grab;
+  transition: transform 0.2s;
+}
+.placeholder {
+  width: 100px;
+  height: 150px;
+  border: 2px dashed gray;
+  margin-right: 10px;
+}
+button {
+  padding: 10px 20px;
+}
+.cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cards-row {
+  display: flex;
+  gap: 10px;
+}
+.swap-highlight {
+  border: 2px dashed #888;
+}
