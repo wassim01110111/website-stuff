@@ -25,48 +25,44 @@
 
     <div class="banks" style="height: auto; margin-top: 60px">
       <div class="bank" style="position: relative; margin: 0 auto; width: 90%">
-        <h2>Raft Puzzles</h2>
-
-        <button class="menuButton" data-href="raft/raft1.html"></button>
-
-        <button class="menuButton" data-href="raft/raft2.html"></button>
-
-        <button class="menuButton" data-href="raft/raft3.html"></button>
-        <button class="menuButton" data-href="raft/raft4.html"></button>
-
-        <h2>Clock Puzzles</h2>
-        <button class="menuButton" data-href="clock/clock1.html"></button>
-        <button class="menuButton" data-href="clock/clock2.html"></button>
-        <h2>Potion Brewing</h2>
-        <button class="menuButton" data-href="potion/potion1.html"></button>
-        <button class="menuButton" data-href="potion/potion2.html"></button>
-        <button class="menuButton" data-href="potion/potion3.html"></button>
+        <h2 class="menuHeader" data-href="raft">Raft Puzzles</h2>
+        <h2 class="menuHeader" data-href="clock">Clock Puzzles</h2>
+        <h2 class="menuHeader" data-href="potion">Potion Brewing</h2>
+        <h2 class="menuHeader" data-href="stack">Stacks</h2>
       </div>
     </div>
     <script src="scripts.js"></script>
     <script>
-      document.querySelectorAll(".menuButton").forEach((button) => {
-        const href = button.dataset.href;
+      document.querySelectorAll(".menuHeader").forEach((header) => {
+        const prehref = header.dataset.href + "/";
 
-        const buttonFile = href.split("/").pop();
-        if (xpFiles[buttonFile]) {
-          button.textContent = xpFiles[buttonFile].title;
-          console.log(xpFiles[buttonFile].xpGained, buttonFile);
-          const buttonXP = xpFiles[buttonFile].xpGained;
-          if (playerData.completedLevels[buttonFile]) {
-            button.classList.add("completed");
-          } else if (buttonXP > 0 && buttonXP < 4) {
-            button.classList.add("easy");
-          } else if (4 <= buttonXP && buttonXP < 6) {
-            button.classList.add("medium");
-          } else {
-            button.classList.add("hard");
+        Object.keys(xpFiles).forEach((fileName) => {
+          if (fileName.startsWith(header.dataset.href)) {
+            const button = document.createElement("button");
+            header.appendChild(button);
+            button.className = "menuButton";
+            const href = prehref + fileName;
+            const buttonFile = href.split("/").pop();
+            if (xpFiles[buttonFile]) {
+              button.textContent = xpFiles[buttonFile].title;
+              const buttonXP = xpFiles[buttonFile].xpGained;
+              console.log(buttonXP, buttonFile);
+              if (playerData.completedLevels[buttonFile]) {
+                button.classList.add("completed");
+              } else if (buttonXP > 0 && buttonXP < 4) {
+                button.classList.add("easy");
+              } else if (4 <= buttonXP && buttonXP < 6) {
+                button.classList.add("medium");
+              } else {
+                button.classList.add("hard");
+              }
+            } else {
+              button.textContent = "File not found";
+            }
+            button.addEventListener("click", () => {
+              location.href = href;
+            });
           }
-        } else {
-          button.textContent = "File not found";
-        }
-        button.addEventListener("click", () => {
-          location.href = href;
         });
       });
       function updateStatsUI() {

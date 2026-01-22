@@ -23,6 +23,9 @@ const xpFiles = {
   "potion3.html": { xpGained: 6, title: "High-Sequence Potion" },
   "clock1.html": { xpGained: 2, title: "Sefirah Castle Theft 1" },
   "clock2.html": { xpGained: 4, title: "Sefirah Castle Theft 2" },
+  "stack1.html": { xpGained: 3, title: "Stacking Volumes" },
+  "stack2.html": { xpGained: 4, title: "Stacking LoTM" },
+  "stack3.html": { xpGained: 6, title: "Stacking CoI" },
 };
 const levels = {
   0: { name: "Mundane Human", xp_max: 1 },

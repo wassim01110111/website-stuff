@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="stack.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span> - Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          Nekros has just issued a decree: you must read and finish the entirety
+          of CoI in no more than
+          <span class="maxMove"></span> moves.
+        </li>
+        <li>
+          Gather and organize your fully legitimate copies of CoI chapters
+          before Nekros catches you.
+        </li>
+        <li>
+          Your goal is to move all chapters from the left pile to the right
+          pile.
+        </li>
+        <li>
+          Chapter order matters! You cannot place a later chapter on top of an
+          earlier one, so smaller chapters must always stay above larger ones.
+        </li>
+        <li>
+          You can use the middle pile as a temporary workspace to help organize
+          your chapters.
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <button id="undo">Undo</button>
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="game">
+      <div id="left" class="spot"></div>
+      <div id="middle" class="spot"></div>
+      <div id="right" class="spot"></div>
+    </div>
+    <script>
+      const numberBooks = 5;
+      const maxMove = 32;
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="stack.js"></script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+#game {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  height: 400px;
+  margin-top: 50px;
+}
+.spot {
+  width: 150px;
+  height: 100%;
+  background: #ddd;
+  position: relative;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  cursor: pointer;
+}
+.book {
+  height: 30px;
+  display: block;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.selected {
+  outline: 3px solid red;
+}
