@@ -30,6 +30,7 @@
         <h2 class="menuHeader" data-href="potion">Potion Brewing</h2>
         <h2 class="menuHeader" data-href="stack">Stacks</h2>
         <h2 class="menuHeader" data-href="placement">Tarot Cards</h2>
+        <h2 class="menuHeader" data-href="coin">Coin Gambit</h2>
       </div>
     </div>
     <script src="scripts.js"></script>
@@ -54,8 +55,10 @@
                 button.classList.add("easy");
               } else if (4 <= buttonXP && buttonXP < 6) {
                 button.classList.add("medium");
-              } else {
+              } else if (6 <= buttonXP && buttonXP < 9) {
                 button.classList.add("hard");
+              } else {
+                button.classList.add("extreme");
               }
             } else {
               button.textContent = "File not found";

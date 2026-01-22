@@ -30,6 +30,9 @@ const xpFiles = {
   "placement2.html": { xpGained: 4, title: "Tarot Divination 2" },
   "placement3.html": { xpGained: 5, title: "Tarot Divination 3" },
   "placement4.html": { xpGained: 6, title: "Tarot Divination 4" },
+  "coin1.html": { xpGained: 3, title: "Coin's Gambit 1" },
+  "coin2.html": { xpGained: 6, title: "Coin's Gambit 2" },
+  "coin3.html": { xpGained: 9, title: "Coin's Gambit 3" },
 };
 const levels = {
   0: { name: "Mundane Human", xp_max: 1 },

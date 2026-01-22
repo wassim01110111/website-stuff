@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="coin.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span> - Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <ul>
+          <li>
+            The <strong>Lord of Toilets</strong> is desperate, he has brought
+            his stronger backer now, Audrey Hall. Beat them and you will be the
+            richest person alive.
+          </li>
+
+          <li>
+            <strong>Objective:</strong> Remove all coins from the board except
+            for one in <span class="maxMove"></span> moves.
+          </li>
+          <li>
+            You can move a coin by jumping it horizontally or vertically over an
+            adjacent coin into an empty space. The jumped-over coin is removed.
+          </li>
+          <li>You cannot jump over walls.</li>
+          <li>Coins that cannot move are not selectable.</li>
+          <li>
+            Click a coin to see possible moves. Click again on a highlighted
+            spot to move the coin.
+          </li>
+          <li>Re-clicking a selected coin will deselect it.</li>
+          <li>
+            The game ends when only one coin remains. If you achieve this, you
+            win against the Lord of Toilets!
+          </li>
+        </ul>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <button id="undo">Undo</button>
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="board"></div>
+
+    <script>
+      const maxMove = 27;
+      const boardMatrix = [
+        [1, 1, 0, 2, 1, 2, 0, 1, 1],
+        [1, 1, 1, 2, 2, 2, 1, 1, 1],
+        [1, 0, 2, 2, 2, 2, 2, 0, 1],
+        [2, 2, 2, 1, 2, 1, 2, 2, 2],
+        [0, 0, 0, 1, 2, 1, 0, 0, 0],
+        [0, 0, 2, 1, 1, 1, 2, 0, 0],
+        [0, 0, 2, 2, 2, 2, 2, 0, 0],
+        [1, 1, 0, 0, 2, 0, 0, 1, 1],
+        [1, 1, 0, 0, 2, 0, 0, 1, 1],
+      ];
+    </script>
+    <script src="../scripts.js"></script>
+    <script src="coin.js"></script>
+  </body>
+</html>
