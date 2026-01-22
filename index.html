@@ -69,10 +69,6 @@
         const statsDiv = document.querySelector(".stats");
         if (!statsDiv) return;
 
-        const playerData = JSON.parse(localStorage.getItem("playerData")) ?? {
-          stats: { sequence: "", time_played: 0, totalXP: 0 },
-        };
-
         const { sequence, time_played, totalXP } = playerData.stats;
 
         statsDiv.innerHTML = `
