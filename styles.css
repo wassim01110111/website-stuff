@@ -584,3 +584,29 @@ button {
       0 0 20px #4b0082;
   }
 }
+.hint {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.hint-item {
+  border: 1px solid #444;
+  margin-bottom: 8px;
+}
+
+.hint-title {
+  padding: 10px;
+  background: #222;
+  cursor: pointer;
+  user-select: none;
+}
+
+.hint-content {
+  padding: 10px;
+  display: none;
+  background: #111;
+}
+
+.hint-item.open .hint-content {
+  display: block;
+}

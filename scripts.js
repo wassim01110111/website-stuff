@@ -190,3 +190,8 @@ function showDeathMessage(message) {
 }
 deathButton.onclick = () => location.reload();
 winButton.onclick = () => (location = "../index.html");
+document.querySelectorAll(".hint-title").forEach((title) => {
+  title.addEventListener("click", () => {
+    title.parentElement.classList.toggle("open");
+  });
+});
