@@ -59,7 +59,7 @@
       </ul>
     </div>
     <div class="status" id="status"></div>
-    <div style="display: flex; align-items: center; gap: 10px">
+    <div style="display: none; align-items: center; gap: 10px">
       <p style="margin: 0">
         Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
       </p>
@@ -68,7 +68,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <script>
-      const maxMove = 10;
+      const maxMove = null;
       const original_order = [
         ["miracleinvoker", "fool", "faceless"],
         ["magician", "clown", "seer"],

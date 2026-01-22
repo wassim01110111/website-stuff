@@ -42,7 +42,7 @@ if (!isMatrix) {
 
 function checkOrder() {
   updateMoveCount();
-  if (moveCount > maxMove) {
+  if (maxMove && moveCount > maxMove) {
     showDeathMessage("The woman placed a crystal monocle on her right eye.");
     return;
   }
