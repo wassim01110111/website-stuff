@@ -215,7 +215,14 @@ h1 {
   border-radius: 6px;
   border: 1px solid #334155;
 }
-
+img.no-action {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 button {
   margin-top: 10px;
   padding: 8px 14px;
