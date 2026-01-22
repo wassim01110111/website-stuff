@@ -81,23 +81,13 @@
         <p>Time Played: <span>${formatTime(time_played)}</span></p>
       `;
       }
+      fixStats();
       window.addEventListener("DOMContentLoaded", updateStatsUI);
-
       function resetStats() {
         const confirmReset = confirm(
           "Are you sure you want to reset all your progress? This cannot be undone!",
         );
         if (!confirmReset) return;
-
-        const defaultData = {
-          completedLevels: {},
-          stats: {
-            sequence: levels[0].name,
-            time_played: 0,
-            totalXP: 0,
-            level: 0,
-          },
-        };
 
         localStorage.setItem("playerData", JSON.stringify(defaultData));
         location.reload();

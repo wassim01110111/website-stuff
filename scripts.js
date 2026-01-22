@@ -34,6 +34,7 @@ const xpFiles = {
   "coin2.html": { xpGained: 6, title: "Coin's Gambit 2" },
   "coin3.html": { xpGained: 9, title: "Coin's Gambit 3" },
 };
+const maxLevel = 18;
 const levels = {
   0: { name: "Mundane Human", xp_max: 1 },
 
@@ -46,27 +47,33 @@ const levels = {
   7: { name: "Sequence 3", xp_max: 28 },
   8: { name: "Sequence 2", xp_max: 34 },
   9: { name: "Sequence 1", xp_max: 40 },
-  10: { name: "Sequence 0", xp_max: 46 },
-
-  11: { name: "Above the Sequences", xp_max: 52 },
+  10: { name: "King of Angels", xp_max: 46 },
+  11: { name: "King of King of Angels", xp_max: 52 },
+  12: { name: "Activated Uniqueness", xp_max: 58 },
+  13: { name: "Sequence 0", xp_max: 64 },
+  14: { name: "Dual-Sequence 0", xp_max: 70 },
+  15: { name: "Above the Sequences", xp_max: 76 },
+  16: { name: "Great Old One", xp_max: 82 },
+  17: { name: "Pillar", xp_max: 88 },
+  18: { name: "Above Pillar", xp_max: 94 },
 };
 if (xpFiles[htmlFile]) {
   const pageTitle = xpFiles[htmlFile].title;
   titleDoc.textContent = pageTitle;
   document.title = pageTitle;
 }
+const defaultData = {
+  completedLevels: {},
+  stats: {
+    sequence: levels[0].name,
+    time_played: 0,
+    totalXP: 0,
+    level: 0,
+  },
+  version: 1,
+};
 function loadPlayerData() {
-  return (
-    JSON.parse(localStorage.getItem("playerData")) ?? {
-      completedLevels: {},
-      stats: {
-        sequence: levels[0].name,
-        time_played: 0,
-        totalXP: 0,
-        level: 0,
-      },
-    }
-  );
+  return JSON.parse(localStorage.getItem("playerData")) ?? defaultData;
 }
 
 function updateMoveCount(neg = false) {
@@ -89,14 +96,31 @@ if (timeCounter) {
 function savePlayerData(data) {
   localStorage.setItem("playerData", JSON.stringify(data));
 }
+function fixStats() {
+  if ((playerData?.version ?? 0) > 0) return;
+  if (playerData.stats.level <= maxLevel) {
+    playerData.stats.sequence = levels[playerData.stats.level].name;
+  } else {
+    const baseXp = levels[maxLevel].xp_max;
+    const step = levels[maxLevel].xp_max - levels[maxLevel - 1].xp_max;
+
+    const atsLevel = Math.floor((totalXp - baseXp) / step);
+
+    const plus = Math.max(1, atsLevel);
+    playerData.stats.sequence = `Above the Sequences +${plus}`;
+  }
+  console.log("Fixed stats");
+  playerData.version = 1;
+  savePlayerData(playerData);
+}
 
 function getLevel(currentLevel, totalXp) {
   let didAscend = false;
-  if (currentLevel < 11) {
+  if (currentLevel < maxLevel) {
     while (totalXp > levels[currentLevel].xp_max) {
       didAscend = true;
       currentLevel++;
-      if (currentLevel > 11) {
+      if (currentLevel > maxLevel) {
         return getLevel(currentLevel, totalXp);
       }
     }
@@ -107,8 +131,8 @@ function getLevel(currentLevel, totalXp) {
     };
   }
 
-  const baseXp = levels[11].xp_max;
-  const step = levels[11].xp_max - levels[10].xp_max;
+  const baseXp = levels[maxLevel].xp_max;
+  const step = levels[maxLevel].xp_max - levels[maxLevel - 1].xp_max;
 
   const atsLevel = Math.floor((totalXp - baseXp) / step);
 
@@ -116,7 +140,7 @@ function getLevel(currentLevel, totalXp) {
 
   return {
     name: `Above the Sequences +${plus}`,
-    level: 11 + plus,
+    level: maxLevel + plus,
     ascended: plus > 0,
   };
 }
