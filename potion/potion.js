@@ -63,6 +63,12 @@ function pourLiquid(from, to) {
   if (moveCount > maxMove) {
     showDeathMessage("The potion was a mess and you lost control!");
   }
+  to.classList.add("pour-animation");
+  from.classList.add("pour-animation");
+  setTimeout(() => {
+    to.classList.remove("pour-animation");
+    from.classList.remove("pour-animation");
+  }, 300);
   fromCurrent -= amountToPour;
   toCurrent += amountToPour;
   from.dataset.current = fromCurrent;

@@ -36,3 +36,25 @@
   font-weight: bold;
   margin-bottom: 5px;
 }
+
+@keyframes pour-twitch {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.pour-animation {
+  animation: pour-twitch 0.3s ease;
+}
