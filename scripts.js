@@ -97,7 +97,7 @@ function savePlayerData(data) {
   localStorage.setItem("playerData", JSON.stringify(data));
 }
 function fixStats() {
-  if ((playerData?.version ?? 0) > 0) return;
+  if ((playerData?.version ?? 0) > 0) return false;
   if (playerData.stats.level <= maxLevel) {
     playerData.stats.sequence = levels[playerData.stats.level].name;
   } else {
@@ -112,6 +112,7 @@ function fixStats() {
   console.log("Fixed stats");
   playerData.version = 1;
   savePlayerData(playerData);
+  return true;
 }
 
 function getLevel(currentLevel, totalXp) {
@@ -193,7 +194,7 @@ function showwinMessage(message) {
   }
 
   playerData.completedLevels[htmlFile] = true;
-
+  fixStats();
   playerData.stats.totalXP += xpFiles[htmlFile].xpGained;
   playerData.stats.time_played += playedTime;
 

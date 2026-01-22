@@ -81,7 +81,9 @@
         <p>Time Played: <span>${formatTime(time_played)}</span></p>
       `;
       }
-      fixStats();
+      if (fixStats()) {
+        location.reload();
+      }
       window.addEventListener("DOMContentLoaded", updateStatsUI);
       function resetStats() {
         const confirmReset = confirm(
