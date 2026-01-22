@@ -1,55 +1,16 @@
 // rotation: 0 = up   1 = right   2 = down  3 = left
 const gridElement = document.getElementById("grid");
 const undoButton = document.getElementById("undo");
-const deathOverlay = document.createElement("div");
-deathOverlay.id = "deathOverlay";
-let gameOver = false;
-document
-  .querySelectorAll(".maxMove")
-  .forEach((el) => (el.textContent = maxMove));
-let moveCount = 0;
+
 let undoCount = 5;
 undoButton.textContent = `Undo (${undoCount} left)`;
-const deathText = document.createElement("div");
-deathText.id = "deathText";
-const moveSpan = document.getElementById("moveCount");
-const deathButton = document.createElement("button");
-deathButton.id = "deathButton";
-deathButton.textContent = "Try Again";
 const playerImg = document.createElement("img");
 playerImg.src = "../images/amon.png";
 playerImg.classList.add("player");
 
-deathOverlay.append(deathText, deathButton);
-document.body.appendChild(deathOverlay);
-
-const statusDiv = document.getElementById("status");
-const winOverlay = document.createElement("div");
-winOverlay.id = "winOverlay";
-
-const winText = document.createElement("div");
-winText.id = "winText";
-
-const winButton = document.createElement("button");
-winButton.textContent = "Try another challenge";
-
-winOverlay.append(winText, winButton);
-document.body.appendChild(winOverlay);
 if (typeof LEVEL_MATRIX === "undefined") {
   throw new Error("LEVEL_MATRIX not defined in HTML");
 }
-function showwinMessage(message) {
-  gameOver = true;
-  winText.textContent = message;
-  winOverlay.classList.add("show");
-}
-function showDeathMessage(message) {
-  gameOver = true;
-  deathText.textContent = message;
-  deathOverlay.classList.add("show");
-}
-deathButton.onclick = () => location.reload();
-winButton.onclick = () => (location = "../index.html");
 
 const DIRS = [
   { x: 0, y: -1 },

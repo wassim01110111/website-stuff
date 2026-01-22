@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Trip to Sefirah Castle</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span> - Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          Help Wassim move Wingy, Nivlek, and Nets from the Nation of Evernight
+          to Sefirah Castle.
+        </li>
+        <li>
+          Nets and Nivlek cannot stand each other and shouldn't be left alone.
+        </li>
+        <li>
+          Wingy and Nets cannot stand each other and shouldn't be left alone.
+        </li>
+        <li>
+          Leaving Nivlek alone in Nation of Evernight will remove any hint of
+          sanity he had.
+        </li>
+        <li>
+          Finish in <span class="maxMove"></span> moves or they will all starve.
+        </li>
+        <li>
+          You can only take <b>1 additional person</b> on the raft per move
+          (everyone is too fat).
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <p>Moves: <span id="moveCount">0</span> / <span class="maxMove"></span></p>
+
+    <div class="banks">
+      <div class="bank left" id="nationEvernight">
+        <h2>Nation of Evernight</h2>
+        <div class="images" id="leftImages"></div>
+      </div>
+
+      <div class="bank right" id="sefirahCastle">
+        <h2>Sefirah Castle</h2>
+        <div class="images" id="rightImages"></div>
+      </div>
+
+      <div id="raft" class="raft left">
+        <h3>Raft</h3>
+        <div class="images" id="raftImages"></div>
+        <img src="../images/wassim.jpg" alt="Wassim" class="wassim" />
+        <button onclick="moveRaft()">Move Raft</button>
+      </div>
+    </div>
+    <script>
+      const maxMove = 7;
+    </script>
+    <script src="../scripts.js"></script>
+    <script src="raft.js"></script>
+    <script>
+      const items = {
+        Wingy: "../images/wing.jpg",
+        Nets: "../images/nets.jpg",
+        Nivlek: "../images/niv.jpg",
+      };
+      let left = Object.keys(items),
+        right = [],
+        raft = [],
+        raftSide = "left";
+
+      const leftDiv = document.getElementById("leftImages");
+      const rightDiv = document.getElementById("rightImages");
+      const raftDiv = document.getElementById("raftImages");
+      const raftEl = document.getElementById("raft");
+
+      function makeItem(name, location) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "character";
+        const img = document.createElement("img");
+        img.src = items[name];
+        img.className = "item";
+        img.onclick = () => toggleItem(name, location);
+        const label = document.createElement("div");
+        label.className = "name";
+        label.textContent = name;
+        wrapper.appendChild(img);
+        wrapper.appendChild(label);
+        return wrapper;
+      }
+
+      function toggleItem(name, location) {
+        if (gameOver) return;
+        if (location === "raft") {
+          raft = raft.filter((i) => i !== name);
+          (raftSide === "left" ? left : right).push(name);
+        } else {
+          if (raft.length >= 1) {
+            statusDiv.textContent = "Cannot take more!";
+            return;
+          }
+          if (location !== raftSide) return;
+          if (location === "left") left = left.filter((i) => i !== name);
+          if (location === "right") right = right.filter((i) => i !== name);
+          raft.push(name);
+        }
+        render();
+      }
+
+      function invalidState(bank, wassimPresent) {
+        if (wassimPresent) return false;
+        const w = bank.includes("Wingy");
+        const n = bank.includes("Nets");
+        const v = bank.includes("Nivlek");
+        return (w && n && !v) || (n && v && !w);
+      }
+
+      function checkNivlekAloneEvernight() {
+        if (left.includes("Nivlek") && left.length === 1) {
+          showDeathMessage(
+            "🌀 Nivlek was left alone in Nation of Evernight. Try again?",
+          );
+          return true;
+        }
+        return false;
+      }
+
+      function moveRaft() {
+        if (gameOver) return;
+        moveCount++;
+
+        const wassimLeavesLeft = raftSide === "left";
+        const wassimLeavesRight = raftSide === "right";
+
+        raftSide = raftSide === "left" ? "right" : "left";
+        const target = raftSide === "left" ? left : right;
+        raft.forEach((i) => target.push(i));
+        raft = [];
+        render();
+
+        if (moveCount > maxMove) {
+          showDeathMessage("⏳ You took too long. Everyone died.");
+          return;
+        }
+        if (
+          invalidState(left, !wassimLeavesLeft) ||
+          invalidState(right, !wassimLeavesRight)
+        ) {
+          showDeathMessage("💀 Someone got killed. Try again?");
+          return;
+        }
+        if (checkNivlekAloneEvernight()) return;
+        if (right.length === 3) {
+          showwinMessage("🎉 CoI-Completed is saved!");
+          gameOver = true;
+        } else {
+          statusDiv.textContent = "";
+        }
+      }
+
+      window.addEventListener("resize", render);
+      render();
+    </script>
+  </body>
+</html>

@@ -18,7 +18,7 @@ body {
   padding: 0 20px;
 }
 
-.title-header span {
+.header-title {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -266,7 +266,34 @@ button {
     0 0 25px rgba(34, 197, 94, 0.4);
   animation: victoryPulse 1.8s ease-in-out infinite;
 }
+.ascendMessage {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: radial-gradient(circle at center, #facc15, #ea580c);
+  padding: 20px 40px;
+  border-radius: 12px;
+  font-family: "Arial Black", Arial, sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  text-shadow:
+    0 0 8px rgba(250, 204, 21, 0.7),
+    0 0 15px rgba(234, 88, 12, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transition:
+    opacity 0.4s ease,
+    transform 0.3s ease;
+}
 
+.ascendMessage.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 @keyframes victoryPulse {
   0% {
     transform: scale(1);
@@ -417,4 +444,90 @@ button {
 #gamepad div {
   display: flex;
   justify-content: center;
+}
+
+.stats {
+  background-color: #1e1e2f;
+  color: #f0f0f0;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  width: max-content;
+  min-width: 250px;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  margin: 1rem 0;
+}
+
+.stats h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #ffd700;
+}
+
+.stats p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
+.stats span {
+  font-weight: bold;
+  color: #00ffea;
+}
+.menuButton {
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  background-color: #1e40af; /* default blue for medium */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.menuButton.easy {
+  background-color: #06b6d4; /* cyan */
+  border-color: #0891b2;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.5);
+}
+
+.menuButton.easy:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.7);
+}
+
+.menuButton.medium {
+  background-color: #3b82f6; /* blue */
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+}
+
+.menuButton.medium:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.7);
+}
+
+.menuButton.hard {
+  background-color: #1e3a8a; /* dark blue */
+  border-color: #1e40af;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.5);
+}
+
+.menuButton.hard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.7);
+}
+
+.menuButton.completed {
+  background-color: #94a3b8; /* grayed out blue */
+  border-color: #64748b;
+  color: #e5e7eb;
+  box-shadow: 0 2px 8px rgba(100, 116, 139, 0.4);
+  cursor: not-allowed;
+}
+
+.menuButton.completed:hover {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(100, 116, 139, 0.4);
 }

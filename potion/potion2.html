@@ -11,7 +11,11 @@
       <button onclick="location.href = '../index.html'">
         ⬅ Back to Riddle Selection
       </button>
-      <span>Mid-Sequence Potion</span>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span> - Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
       <button onclick="location.reload()">🔄️ Retry</button>
     </div>
     <div class="rules-container">
@@ -49,6 +53,7 @@
       const winningSeq = "Scrolls Professor";
     </script>
 
+    <script src="../scripts.js"></script>
     <script src="potion.js"></script>
   </body>
 </html>

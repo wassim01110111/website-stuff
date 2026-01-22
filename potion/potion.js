@@ -1,46 +1,8 @@
 const containerWrapper = document.getElementById("potion-container-wrapper");
 const winSpan = document.getElementById("winCon");
 winSpan.textContent = winningCondition;
-document
-  .querySelectorAll(".maxMove")
-  .forEach((el) => (el.textContent = maxMove));
-const moveSpan = document.getElementById("moveCount");
-
-const winOverlay = document.createElement("div");
-winOverlay.id = "winOverlay";
-
-const winText = document.createElement("div");
-winText.id = "winText";
-
-const winButton = document.createElement("button");
-winButton.textContent = "Try another challenge";
-
-winOverlay.append(winText, winButton);
-document.body.appendChild(winOverlay);
-const deathOverlay = document.createElement("div");
-deathOverlay.id = "deathOverlay";
-const deathText = document.createElement("div");
-deathText.id = "deathText";
-const deathButton = document.createElement("button");
-deathButton.id = "deathButton";
-deathButton.textContent = "Try Again";
-deathOverlay.append(deathText, deathButton);
-document.body.appendChild(deathOverlay);
-function showwinMessage(message) {
-  gameOver = true;
-  winText.textContent = message;
-  winOverlay.classList.add("show");
-}
-function showDeathMessage(message) {
-  gameOver = true;
-  deathText.textContent = message;
-  deathOverlay.classList.add("show");
-}
-deathButton.onclick = () => location.reload();
-winButton.onclick = () => (location = "../index.html");
 
 let selectedContainer = null;
-let moveCount = 0;
 const maxCapacity = Math.max(...potionContainers);
 const baseHeight = 200;
 

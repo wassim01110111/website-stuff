@@ -7,45 +7,106 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>🧩 Choose a Riddle</h1>
+    <div class="title-header">
+      <button
+        onclick="
+          window.open(
+            'https://discord.com/channels/563405492420870155/1463564235031183528/1463564235031183528',
+            '_blank',
+          )
+        "
+      >
+        Give feedback 📝
+      </button>
+      <span>🧩 Choose a Puzzle</span>
+      <button onclick="resetStats()">Reset stats ⚠️</button>
+    </div>
+    <div class="stats"></div>
 
     <div class="banks" style="height: auto; margin-top: 60px">
       <div class="bank" style="position: relative; margin: 0 auto; width: 90%">
         <h2>Raft Puzzles</h2>
 
-        <button onclick="location.href = 'raft/riddle1.html'">
-          Trip to Sefirah Castle
-        </button>
+        <button class="menuButton" data-href="raft/raft1.html"></button>
 
-        <button onclick="location.href = 'raft/riddle2.html'">
-          Avoid the Ban
-        </button>
+        <button class="menuButton" data-href="raft/raft2.html"></button>
 
-        <button onclick="location.href = 'raft/riddle3.html'">
-          Coi-Completed Emergency
-        </button>
-        <button onclick="location.href = 'raft/riddle4.html'">
-          Two men and three lurkers
-        </button>
+        <button class="menuButton" data-href="raft/raft3.html"></button>
+        <button class="menuButton" data-href="raft/raft4.html"></button>
 
         <h2>Clock Puzzles</h2>
-        <button onclick="location.href = 'clock/clock1.html'">
-          Sefirah Castle Theft 1
-        </button>
-        <button onclick="location.href = 'clock/clock2.html'">
-          Sefirah Castle Theft 2
-        </button>
+        <button class="menuButton" data-href="clock/clock1.html"></button>
+        <button class="menuButton" data-href="clock/clock2.html"></button>
         <h2>Potion Brewing</h2>
-        <button onclick="location.href = 'potion/potion1.html'">
-          Low-Sequence Potion Brewing
-        </button>
-        <button onclick="location.href = 'potion/potion2.html'">
-          Mid-Sequence Potion Brewing
-        </button>
-        <button onclick="location.href = 'potion/potion3.html'">
-          High-Sequence Potion Brewing
-        </button>
+        <button class="menuButton" data-href="potion/potion1.html"></button>
+        <button class="menuButton" data-href="potion/potion2.html"></button>
+        <button class="menuButton" data-href="potion/potion3.html"></button>
       </div>
     </div>
+    <script src="scripts.js"></script>
+    <script>
+      document.querySelectorAll(".menuButton").forEach((button) => {
+        const href = button.dataset.href;
+
+        const buttonFile = href.split("/").pop();
+        if (xpFiles[buttonFile]) {
+          button.textContent = xpFiles[buttonFile].title;
+          console.log(xpFiles[buttonFile].xpGained, buttonFile);
+          const buttonXP = xpFiles[buttonFile].xpGained;
+          if (playerData.completedLevels[buttonFile]) {
+            button.classList.add("completed");
+          } else if (buttonXP > 0 && buttonXP < 4) {
+            button.classList.add("easy");
+          } else if (4 <= buttonXP && buttonXP < 6) {
+            button.classList.add("medium");
+          } else {
+            button.classList.add("hard");
+          }
+        } else {
+          button.textContent = "File not found";
+        }
+        button.addEventListener("click", () => {
+          location.href = href;
+        });
+      });
+      function updateStatsUI() {
+        const statsDiv = document.querySelector(".stats");
+        if (!statsDiv) return;
+
+        const playerData = JSON.parse(localStorage.getItem("playerData")) ?? {
+          stats: { sequence: "", time_played: 0, totalXP: 0 },
+        };
+
+        const { sequence, time_played, totalXP } = playerData.stats;
+
+        statsDiv.innerHTML = `
+        <h3>Beyonder Stats</h3>
+        <p>Sequence: <span>${sequence || "None"}</span></p>
+        <p>Time Played: <span>${formatTime(time_played)}</span></p>
+      `;
+      }
+      window.addEventListener("DOMContentLoaded", updateStatsUI);
+
+      function resetStats() {
+        const confirmReset = confirm(
+          "Are you sure you want to reset all your progress? This cannot be undone!",
+        );
+        if (!confirmReset) return;
+
+        const defaultData = {
+          completedLevels: {},
+          stats: {
+            sequence: levels[0].name,
+            time_played: 0,
+            totalXP: 0,
+            level: 0,
+          },
+        };
+
+        localStorage.setItem("playerData", JSON.stringify(defaultData));
+        alert("All stats have been reset!");
+        location.reload();
+      }
+    </script>
   </body>
 </html>
