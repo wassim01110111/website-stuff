@@ -8,7 +8,8 @@
   hintHistory.appendChild(hintHistorySpan);
   const noteReset = document.getElementById("noteReset");
   const defaultColor = "#5c5cff";
-
+  const noteUndo = document.getElementById("noteUndo");
+  const noteHistory = [];
   function pickRandomFromSet(set) {
     const index = Math.floor(Math.random() * set.size);
     let i = 0;
@@ -167,6 +168,7 @@
         const btn = document.createElement("button");
         btn.style.backgroundColor = color;
         btn.addEventListener("click", () => {
+          saveHistory();
           if (color === "red") {
             guessContainer
               .querySelectorAll(
@@ -391,15 +393,32 @@
       });
     });
   }
-
+  function saveHistory() {
+    const historyItem = [];
+    guessContainer.querySelectorAll(`.hint-number`).forEach((el) => {
+      historyItem.push(el.style.backgroundColor);
+    });
+    noteHistory.push(historyItem);
+  }
   createInputArea(numberLength);
   Sortable.create(guessContainer, {
     animation: 150,
     ghostClass: "dragging",
   });
   noteReset.addEventListener("click", () => {
-    document.querySelectorAll(".hint-number").forEach((el) => {
+    saveHistory();
+    guessContainer.querySelectorAll(".hint-number").forEach((el) => {
       el.style.backgroundColor = defaultColor;
     });
+  });
+  noteUndo.addEventListener("click", () => {
+    if (noteHistory.length > 0) {
+      const historyItem = noteHistory.pop();
+      guessContainer.querySelectorAll(`.hint-number`).forEach((el, index) => {
+        el.style.backgroundColor = historyItem[index];
+      });
+    } else {
+      writeToStatus("Nothing to undo");
+    }
   });
 })();
