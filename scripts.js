@@ -1,6 +1,13 @@
-document
-  .querySelectorAll(".maxMove")
-  .forEach((el) => (el.textContent = maxMove));
+const maxmoves = document.querySelectorAll(".maxMove");
+if (maxmoves.length > 0) {
+  maxmoves.forEach((el) => (el.textContent = maxMove));
+  if (maxMove === null) {
+    const maxMoveDiv = document.getElementById("maxMove");
+    if (maxMoveDiv) {
+      maxMoveDiv.style.display = "none";
+    }
+  }
+}
 let gameOver = false;
 let moveCount = 0;
 const path = document.location.pathname;
@@ -13,6 +20,27 @@ function formatTime(seconds) {
   const s = seconds % 60;
   return `${m}m ${s}s`;
 }
+
+function arraysEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+
+  return true;
+}
+
+function generateRules(rulesArray) {
+  const container = document.querySelector(".rules");
+
+  rulesArray.forEach((rule) => {
+    const li = document.createElement("li");
+    li.innerHTML = rule;
+    container.appendChild(li);
+  });
+}
+
 const xpFiles = {
   "raft1.html": { xpGained: 2, title: "Trip to Sefirah Castle" },
   "raft2.html": { xpGained: 2, title: "Avoid the Ban" },
@@ -21,6 +49,7 @@ const xpFiles = {
   "potion1.html": { xpGained: 4, title: "Low-Sequence Potion" },
   "potion2.html": { xpGained: 5, title: "Mid-Sequence Potion" },
   "potion3.html": { xpGained: 6, title: "High-Sequence Potion" },
+  "potion4.html": { xpGained: 7, title: "Apotheosis Potion" },
   "clock1.html": { xpGained: 2, title: "Sefirah Castle Theft 1" },
   "clock2.html": { xpGained: 4, title: "Sefirah Castle Theft 2" },
   "stack1.html": { xpGained: 3, title: "Stacking Volumes" },
@@ -29,15 +58,55 @@ const xpFiles = {
   "placement1.html": { xpGained: 3, title: "Tarot Divination 1" },
   "placement2.html": { xpGained: 4, title: "Tarot Divination 2" },
   "placement3.html": { xpGained: 5, title: "Tarot Divination 3" },
-  "placement4.html": { xpGained: 6, title: "Tarot Divination 4" },
+  "placement4.html": { xpGained: 5, title: "Tarot Divination 4" },
+  "placement5.html": { xpGained: 6, title: "Tarot Divination 5" },
+  "placement6.html": { xpGained: 3, title: "Tarot Divination 6" },
   "coin1.html": { xpGained: 3, title: "Coin's Gambit 1" },
   "coin2.html": { xpGained: 6, title: "Coin's Gambit 2" },
   "coin3.html": { xpGained: 9, title: "Coin's Gambit 3" },
+  "numberguess1.html": { xpGained: 2, title: "Cryptologist's Trial" },
+  "numberguess2.html": { xpGained: 6, title: "Cryptologist's Duty" },
+  "numberguess3.html": { xpGained: 9, title: "Cryptologist's Mission" },
+  "scale1.html": { xpGained: 2, title: "Parasite Scale" },
+  "scale2.html": { xpGained: 4, title: "Power Scaling" },
+  "scale3.html": { xpGained: 7, title: "Fragile Balance" },
+  "misc1.html": { xpGained: 3, title: "Grand Theft Chanis" },
+  "misc2.html": { xpGained: 3, title: "Hand of Order" },
+  "misc3.html": { xpGained: 4, title: "Fraud of Steam's Homework" },
+  "chairhop1.html": { xpGained: 3, title: "Chaos in Sefirah Castle" },
+  "chairhop2.html": { xpGained: 5, title: "Seats of Fate" },
+  "slicing1.html": { xpGained: 3, title: "Concealed Fan Art 1" },
+  "slicing2.html": { xpGained: 4, title: "Concealed Fan Art 2" },
+  "slicing3.html": { xpGained: 5, title: "Concealed Fan Art 3" },
+  "slicing4.html": { xpGained: 6, title: "Concealed Fan Art 4" },
+  "slicing5.html": { xpGained: 9, title: "Concealed Fan Art 5" },
+  "riddles1.html": { xpGained: 3, title: "Arrodes's Riddles 1" },
+  "riddles2.html": { xpGained: 3, title: "Arrodes's Riddles 2" },
+  "riddles3.html": { xpGained: 3, title: "Arrodes's Riddles 3" },
+  "riddles4.html": { xpGained: 3, title: "Arrodes's Riddles 4" },
+  "riddles5.html": { xpGained: 3, title: "Arrodes's Riddles 5" },
+  "riddles6.html": { xpGained: 3, title: "Arrodes's Riddles 6" },
+  "riddles7.html": { xpGained: 5, title: "Arrodes's Riddles 7" },
+  "riddles8.html": { xpGained: 4, title: "Arrodes's Riddles 8" },
+  "maze1.html": { xpGained: 2, title: "Slippery Sefirah 1" },
+  "maze2.html": { xpGained: 2, title: "Slippery Sefirah 2" },
+  "maze3.html": { xpGained: 3, title: "Slippery Sefirah 3" },
+  "maze4.html": { xpGained: 4, title: "Slippery Sefirah 4" },
+  "maze5.html": { xpGained: 5, title: "Slippery Sefirah 5" },
+  "maze6.html": { xpGained: 5, title: "Slippery Sefirah 6" },
+  "maze7.html": { xpGained: 6, title: "Slippery Sefirah 7" },
+  "maze8.html": { xpGained: 3, title: "Slippery Sefirah 8" },
+  "maze9.html": { xpGained: 5, title: "Slippery Sefirah 9" },
+  "maze10.html": { xpGained: 6, title: "Slippery Sefirah 10" },
+  "maze11.html": { xpGained: 6, title: "Slippery Sefirah 11" },
+  "maze12.html": { xpGained: 7, title: "Slippery Sefirah 12" },
+  "maze13.html": { xpGained: 6, title: "Slippery Sefirah 13" },
+  "maze14.html": { xpGained: 7, title: "Slippery Sefirah 14" },
+  "maze15.html": { xpGained: 8, title: "Slippery Sefirah 15" },
+  "maze16.html": { xpGained: 7, title: "Slippery Sefirah 16" },
 };
-const maxLevel = 18;
 const levels = {
   0: { name: "Mundane Human", xp_max: 1 },
-
   1: { name: "Sequence 9", xp_max: 3 },
   2: { name: "Sequence 8", xp_max: 5 },
   3: { name: "Sequence 7", xp_max: 10 },
@@ -57,6 +126,7 @@ const levels = {
   17: { name: "Pillar", xp_max: 88 },
   18: { name: "Above Pillar", xp_max: 94 },
 };
+const maxLevel = Math.max(...Object.keys(levels).map(Number));
 if (xpFiles[htmlFile]) {
   const pageTitle = xpFiles[htmlFile].title;
   titleDoc.textContent = pageTitle;
@@ -70,7 +140,7 @@ const defaultData = {
     totalXP: 0,
     level: 0,
   },
-  version: 1,
+  version: 2,
 };
 function loadPlayerData() {
   return JSON.parse(localStorage.getItem("playerData")) ?? defaultData;
@@ -83,6 +153,9 @@ function updateMoveCount(neg = false) {
     moveCount++;
   }
   moveSpan.textContent = moveCount;
+}
+function capitalize(str) {
+  return str[0].toUpperCase() + str.slice(1);
 }
 const playerData = loadPlayerData();
 console.log(playerData);
@@ -97,20 +170,23 @@ function savePlayerData(data) {
   localStorage.setItem("playerData", JSON.stringify(data));
 }
 function fixStats() {
-  if ((playerData?.version ?? 0) > 0) return false;
-  if (playerData.stats.level <= maxLevel) {
-    playerData.stats.sequence = levels[playerData.stats.level].name;
-  } else {
-    const baseXp = levels[maxLevel].xp_max;
-    const step = levels[maxLevel].xp_max - levels[maxLevel - 1].xp_max;
-
-    const atsLevel = Math.floor((totalXp - baseXp) / step);
-
-    const plus = Math.max(1, atsLevel);
-    playerData.stats.sequence = `Above the Sequences +${plus}`;
+  if ((playerData?.version ?? 0) === defaultData.version) return false;
+  let fixedXP = 0;
+  for (const level in playerData.completedLevels) {
+    fixedXP += xpFiles[level].xpGained;
   }
+  playerData.stats.totalXP = fixedXP;
+  const {
+    name: fixedSequence,
+    level: fixedLevel,
+    ascended: fixedBool,
+  } = getLevel(0, fixedXP);
+
+  playerData.stats.sequence = fixedSequence;
+  playerData.stats.level = fixedLevel;
+
   console.log("Fixed stats");
-  playerData.version = 1;
+  playerData.version = defaultData.version;
   savePlayerData(playerData);
   return true;
 }
@@ -140,7 +216,7 @@ function getLevel(currentLevel, totalXp) {
   const plus = Math.max(1, atsLevel);
 
   return {
-    name: `Above the Sequences +${plus}`,
+    name: `${levels[maxLevel].name} +${plus}`,
     level: maxLevel + plus,
     ascended: plus > 0,
   };
@@ -157,8 +233,21 @@ winText.id = "winText";
 
 const winButton = document.createElement("button");
 winButton.textContent = "Try another challenge";
-
-winOverlay.append(winText, winButton);
+const nextChallenge = document.createElement("button");
+nextChallenge.textContent = "Go to the Next Puzzle";
+const nextPuzzle = (() => {
+  const f = htmlFile.replace(/(\d+)(?=\.html$)/, (x) => +x + 1);
+  if (xpFiles[f]) {
+    nextChallenge.addEventListener("click", () => {
+      window.location.href = f;
+    });
+    return f;
+  } else {
+    nextChallenge.style.display = "none";
+    return null;
+  }
+})();
+winOverlay.append(winText, winButton, nextChallenge);
 document.body.appendChild(winOverlay);
 const deathOverlay = document.createElement("div");
 deathOverlay.id = "deathOverlay";
@@ -184,9 +273,24 @@ function showAscendAnimation(sequenceName) {
   }, 2500);
 }
 
+function writeToStatus(message = "", color = null, focus = false) {
+  statusDiv.textContent = message;
+  if (color !== null) {
+    statusDiv.style.color = color;
+  } else {
+    statusDiv.style.color = "white";
+  }
+  if (focus) {
+    statusDiv.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+}
+
 function showwinMessage(message) {
   gameOver = true;
-  winText.textContent = message;
+  winText.innerHTML = message;
   winOverlay.classList.add("show");
 
   if (playerData.completedLevels[htmlFile]) {
@@ -205,13 +309,17 @@ function showwinMessage(message) {
     playerData.stats.sequence = levelData.name;
     playerData.stats.level = levelData.level;
   }
-  console.log(playerData, "playerdata");
   savePlayerData(playerData);
+  const rect = winText.getBoundingClientRect();
+  window.scrollTo(0, window.scrollY + rect.top);
 }
 function showDeathMessage(message) {
   gameOver = true;
-  deathText.textContent = message;
+  winOverlay.classList.remove("show");
+  deathText.innerHTML = message;
   deathOverlay.classList.add("show");
+  const rect = deathText.getBoundingClientRect();
+  window.scrollTo(0, window.scrollY + rect.top);
 }
 deathButton.onclick = () => location.reload();
 winButton.onclick = () => (location = "../index.html");

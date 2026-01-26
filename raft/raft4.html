@@ -117,7 +117,7 @@
           (raftSide === "left" ? left : right).push(name);
         } else {
           if (raft.length >= 2) {
-            statusDiv.textContent = "Raft can only hold 2 people.";
+            writeToStatus("Raft can only hold 2 people.", "yellow");
             return;
           }
           if (location !== raftSide) return;
@@ -128,7 +128,7 @@
           raft.push(name);
         }
 
-        statusDiv.textContent = "";
+        writeToStatus("");
         render();
       }
 
@@ -136,7 +136,11 @@
         if (gameOver) return;
 
         if (raft.length === 0) {
-          statusDiv.textContent = "At least one person must be on the raft.";
+          writeToStatus(
+            "At least one person must be on the raft.",
+            "red",
+            true,
+          );
           return;
         }
 

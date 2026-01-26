@@ -29,6 +29,18 @@
   color: white;
   font-weight: bold;
 }
+.liquid.red {
+  background-color: #fa0909;
+}
+.liquid.blue {
+  background-color: #0971fa;
+}
+.liquid.green {
+  background-color: #09fa41;
+}
+.liquid.black {
+  background-color: #2e2e2e;
+}
 .selected {
   border-color: red;
 }

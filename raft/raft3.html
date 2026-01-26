@@ -130,13 +130,13 @@
         const raftWeight = raft.reduce((sum, c) => sum + c.weight, 0);
 
         if (raftWeight + character.weight > 2) {
-          statusDiv.textContent = "🚫 Too heavy!";
+          writeToStatus("🚫 Too heavy!", "red");
           source.push(character);
           return;
         }
 
         raft.push(character);
-        statusDiv.textContent = "";
+        writeToStatus("");
         render();
       }
 
@@ -150,8 +150,7 @@
         if (gameOver) return;
 
         if (raft.length === 0) {
-          statusDiv.textContent =
-            "🚣‍♂️ You need at least one person on the raft!";
+          writeToStatus("🚣‍♂️ You need at least one person on the raft!", "red");
           return;
         }
 
@@ -175,7 +174,7 @@
           return;
         }
 
-        statusDiv.textContent = "";
+        writeToStatus("");
       }
 
       window.addEventListener("resize", render);

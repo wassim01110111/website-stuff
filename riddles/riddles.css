@@ -1,0 +1,66 @@
+#answer-riddle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.riddle-image {
+  max-height: 70vh;
+  width: 100%;
+  height: auto;
+  border: 2px solid #444;
+  border-radius: 8px;
+}
+
+.riddle-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+.riddle-button:hover {
+  background-color: #45a049;
+}
+#input-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+#input-container input {
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #5c5cff;
+  background: #2b2b4b;
+  color: #fff;
+  font-size: 1.2rem;
+}
+#input-container input.active {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px 3px #5c5cff;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+#input-container button {
+  padding: 10px 15px;
+  background: #5c5cff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#input-container button:hover {
+  background: #3b3bff;
+}

@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+      #misc-board {
+        display: grid;
+        grid-template-columns: repeat(2, 180px);
+        grid-gap: 50px;
+        margin-bottom: 30px;
+        margin-top: 30px;
+      }
+
+      .card {
+        height: 180px;
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        gap: 10px;
+      }
+
+      .misc-button {
+        width: 80px;
+        height: 40px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+      }
+
+      #b1 {
+        background: #ef4444;
+      }
+      #b2 {
+        background: #3b82f6;
+      }
+      #b3 {
+        background: #22c55e;
+      }
+      #b4 {
+        background: #eab308;
+      }
+
+      .misc-button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .misc-undo {
+        background: #444;
+        color: #fff;
+      }
+    </style>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          You've been sent to steal a <strong>Sealed Artifact</strong> hidden
+          behind the <strong>Chanis Gate</strong>. A defensive mechanism now
+          blocks your entrance.
+        </li>
+        <li>
+          Align the pictures by correcting their rotation to unlock the gate.
+        </li>
+        <li>
+          Use the buttons to rotate the pictures carefully, you only have
+          <span class="maxMove"></span> moves before the alarm is triggered and
+          you're caught.
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+      <button class="undo" onclick="undo()">
+        Undo (<span id="undosleft"></span> left)
+      </button>
+    </div>
+    <div id="misc-board"></div>
+
+    <div class="controls">
+      <button class="misc-button" id="b1" onclick="rotatePair(0)"></button>
+      <button class="misc-button" id="b2" onclick="rotatePair(1)"></button>
+      <button class="misc-button" id="b3" onclick="rotatePair(2)"></button>
+      <button class="misc-button" id="b4" onclick="rotatePair(3)"></button>
+    </div>
+
+    <script>
+      const maxMove = 20;
+      let undos = 5;
+      const first = Math.floor(Math.random() * 4);
+
+      let second;
+      do {
+        second = Math.floor(Math.random() * 4);
+      } while (second === first);
+
+      const cards = [
+        { img: "../images/fool.jpg", rot: first * 90 },
+        { img: "../images/seer.jpg", rot: second * 90 },
+        { img: "../images/clown.jpg", rot: second * 90 },
+        { img: "../images/magician.jpg", rot: first * 90 },
+      ];
+
+      const history = [];
+      let lastButton = null;
+
+      const pairs = [
+        [0, 1],
+        [1, 3],
+        [2, 0],
+        [3, 2],
+      ];
+
+      const board = document.getElementById("misc-board");
+      const buttons = document.querySelectorAll(".controls button");
+      const undosleft = document.getElementById("undosleft");
+      undosleft.textContent = undos;
+
+      function render() {
+        board.innerHTML = "";
+        cards.forEach((card) => {
+          const div = document.createElement("div");
+          div.className = "card";
+          div.style.backgroundImage = `url(${card.img})`;
+          div.style.transform = `rotate(${card.rot}deg)`;
+          board.appendChild(div);
+        });
+
+        checkWin();
+      }
+
+      function rotatePair(index) {
+        updateMoveCount();
+        if (moveCount > maxMove) {
+          showDeathMessage("You have triggered the alarm!");
+        }
+        history.push(cards.map((c) => c.rot));
+
+        pairs[index].forEach((i) => {
+          cards[i].rot = (cards[i].rot + 90) % 360;
+        });
+
+        if (lastButton !== null) buttons[lastButton].disabled = false;
+        buttons[index].disabled = true;
+        lastButton = index;
+
+        render();
+      }
+
+      function undo() {
+        if (history.length === 0 || undos < 1) return;
+        undos--;
+        updateMoveCount(true);
+        undosleft.textContent = undos;
+
+        const prev = history.pop();
+        prev.forEach((rot, i) => (cards[i].rot = rot));
+
+        buttons.forEach((b) => (b.disabled = false));
+        lastButton = null;
+
+        render();
+      }
+
+      function checkWin() {
+        const won = cards.every((c) => c.rot % 360 === 0);
+        if (won) {
+          showwinMessage("The gate opens...");
+        }
+      }
+
+      render();
+    </script>
+
+    <script src="../scripts.js"></script>
+  </body>
+</html>

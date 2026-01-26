@@ -1,0 +1,349 @@
+:root {
+  --wall-thick: 5px;
+  --wall-thin: 1px;
+  --wall-color: #373737;
+  --wall-width: 10px;
+  --bump-length: 5px;
+}
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #5757a1;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  margin-top: 1em;
+  margin-bottom: 3em;
+  color: #f0f0f5;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  width: 80%;
+}
+#game-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 15px;
+}
+#game-grid img {
+  height: 5vh;
+  aspect-ratio: 1/1;
+}
+#game-grid img:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+#board {
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+  height: 50vh;
+  background: linear-gradient(180deg, #9b9be7, #5757a1, #6f6fbd);
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  box-shadow:
+    0 0 0 2px rgba(120, 180, 255, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.6);
+}
+.maze-row {
+  display: flex;
+  gap: 0px;
+}
+
+.maze-character {
+  height: 80%;
+  margin-top: 5px;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+}
+
+.maze-character.selected {
+  animation: pulse 1s infinite;
+  z-index: 10;
+}
+
+.maze-highlight {
+  border: 2px solid gold;
+  background: radial-gradient(
+    circle at center,
+    rgba(100, 50, 0, 0.6),
+    rgba(50, 0, 0, 0.9)
+  );
+  box-shadow: 0 0 20px gold;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.movable-character {
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-position: center;
+  z-index: 20;
+  aspect-ratio: 1 / 1;
+}
+.leftWall {
+  border-left: var(--wall-width) solid var(--wall-color);
+}
+.rightWall {
+  border-right: var(--wall-width) solid var(--wall-color);
+}
+.topWall {
+  border-top: var(--wall-width) solid var(--wall-color);
+}
+.bottomWall {
+  border-bottom: var(--wall-width) solid var(--wall-color);
+}
+
+.leftBreakableWall {
+  border-left-color: orange;
+}
+.rightBreakableWall {
+  border-right-color: orange;
+}
+.topBreakableWall {
+  border-top-color: orange;
+}
+.bottomBreakableWall {
+  border-bottom-color: orange;
+}
+
+.character-selected {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8))
+    drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+.maze-empty {
+  background: linear-gradient(145deg, #d4e8f0, #b8d4e6);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.6);
+  position: relative;
+}
+
+.maze-empty::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 15px 15px;
+  background-position:
+    0 0,
+    0 7.5px,
+    7.5px -7.5px,
+    -7.5px 0px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.maze-cell {
+  box-sizing: border-box;
+
+  aspect-ratio: 1 / 1;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
+
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #d4e8f0, #b8d4e6);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.6);
+  position: relative;
+}
+
+.maze-cell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 15px 15px;
+  background-position:
+    0 0,
+    0 7.5px,
+    7.5px -7.5px,
+    -7.5px 0px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.maze-hole::after {
+  opacity: 1;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 70%;
+  transition: opacity 0.5s ease;
+  height: 70%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="black"/></svg>')
+    no-repeat center center;
+  background-size: contain;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.maze-fragile {
+  position: relative;
+  overflow: hidden;
+}
+.maze-fragile::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  opacity: 1;
+  left: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><pattern id="crack" x="0" y="0" width="400" height="400" patternUnits="userSpaceOnUse"><rect width="400" height="400" fill="%23f5f5f5"/><path d="M0,80 Q20,70 40,85 T80,90 L120,110 Q140,100 160,115 L200,105 M200,105 L240,95 Q260,105 280,92 L320,88 Q340,95 360,82 L400,75 M80,0 L85,40 Q75,60 88,80 L95,120 M95,120 L105,160 Q98,180 110,200 L115,240 Q108,260 118,280 L125,320 L130,360 L135,400 M200,0 L195,35 Q205,55 198,75 L190,115 M190,115 L185,155 Q192,175 188,195 L180,235 Q188,255 182,275 L175,315 L170,355 L165,400 M320,0 L315,45 Q325,65 318,85 L310,125 M310,125 L305,165 Q312,185 308,205 L300,245 Q308,265 302,285 L295,325 L290,365 L285,400 M0,200 L35,205 Q55,195 75,202 L115,210 M115,210 L155,215 Q175,208 195,212 L235,220 Q255,212 275,218 L315,225 L355,230 L400,235 M40,280 Q60,275 80,282 L120,290 Q140,285 160,288 L200,295 M200,295 L240,300 Q260,295 280,298 L320,305 L360,310 L400,315" stroke="%23333" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M60,50 L100,120 M140,30 L180,95 M220,140 L180,180 M260,60 L240,130 M300,170 L340,220 M50,250 L90,310 M130,280 L170,340 M210,260 L250,320 M290,240 L330,300 M370,280 L350,350" stroke="%23333" stroke-width="1.5" fill="none" opacity="0.7"/></pattern></defs><rect width="400" height="400" fill="url(%23crack)"/></svg>');
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.movable-dead {
+  opacity: 0;
+}
+.dead-char-selec {
+  filter: grayscale(100%) drop-shadow(0 0 5px red) drop-shadow(0 0 10px red);
+}
+
+.grid-char {
+  display: flex;
+  flex-direction: column;
+}
+@keyframes bump-top {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(-1 * var(--bump-length)));
+  }
+}
+
+@keyframes bump-bottom {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--bump-length));
+  }
+}
+
+@keyframes bump-left {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(calc(-1 * var(--bump-length)));
+  }
+}
+
+@keyframes bump-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(var(--bump-length));
+  }
+}
+.obj-spring::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/spring.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.movable-character.obj-spring::after {
+  background-position: bottom right;
+  transform-origin: bottom right;
+  transform: scale(0.5);
+}
+.obj-niv::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/niv.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.movable-character.obj-niv::after {
+  background-position: bottom right;
+  transform-origin: bottom right;
+  transform: scale(0.5);
+}
+.maze-platform {
+  margin-top: auto;
+  width: 100%;
+  height: 20px;
+  bottom: 0;
+  border-top: 2px dashed #dd6e0d;
+  text-align: center;
+  font-size: 20px;
+  color: #dd6e0d;
+  display: flex;
+  z-index: 50;
+  justify-content: center;
+  align-items: center;
+  font-family: "Cinzel", serif;
+  letter-spacing: 1px;
+
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0 0 4px rgba(0, 0, 0, 0.8);
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="chairhop.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules"></ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <button id="undo" style="margin-top: -5px">
+        Yesterday Once More Charm
+      </button>
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div class="chair-grid" id="grid"></div>
+
+    <script>
+      const maxMove = 8;
+      let undoCount = 3;
+      const gridData = [
+        ["klein", "gehrman"],
+        ["audrey", "fors"],
+        ["", ""],
+        ["gehrman", "klein"],
+        ["fors", "audrey"],
+      ];
+
+      const allRules = [
+        "Chaos erupted in <strong>Sefirah Castle</strong>, the Junk Pile went haywire! Every tarot member has been displaced from their rightful chair.",
+      ];
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="chairhop.js"></script>
+  </body>
+</html>

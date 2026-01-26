@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      #game-grid {
+        display: flex;
+
+        gap: 12px;
+        padding: 16px;
+      }
+      #game-container {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        background-color: #5757a1;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        margin-top: 1em;
+        margin-bottom: 3em;
+        color: #f0f0f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+      }
+      #game-grid img,
+      .spot img,
+      .spot-replicate img {
+        max-height: 18em;
+        max-width: 9em;
+        border-radius: 8px;
+      }
+
+      #equation-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        margin-top: 24px;
+      }
+
+      img {
+        cursor: grab;
+      }
+      img:active {
+        cursor: grabbing;
+      }
+      #equation-grid > div {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .spot,
+      .spot-replicate {
+        height: 18em;
+        width: 9em;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #a5ad0d, #926a04);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .spot:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.6);
+      }
+
+      .spot-replicate {
+        background: linear-gradient(135deg, #5a5a5f, #434348);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+      }
+
+      .spot-replicate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+      }
+
+      .spot img,
+      .spot-replicate img {
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      .empty-spot {
+        height: 18em;
+        width: 3em;
+      }
+      .operator {
+        font-size: 28px;
+        width: 1.7em;
+        font-weight: bold;
+        color: #fff;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .equalrow > * {
+        max-height: 3em;
+        height: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .operator.equal {
+        width: 5em;
+      }
+      #complete-container {
+        width: 100%;
+      }
+      @media (orientation: landscape) {
+        #complete-container {
+          display: flex;
+          flex-direction: row;
+          gap: 2em;
+          flex-wrap: wrap;
+        }
+        #game-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 9em);
+          grid-auto-rows: 18em;
+          gap: 12px;
+          padding: 16px;
+          justify-content: center;
+        }
+      }
+      @media (orientation: portrait) {
+        #game-container {
+          max-width: 100%;
+        }
+        #game-grid {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          As a bishop of the Church of Steam and Machinery, you are often tasked
+          with solving mental puzzles your mentally challenged God, Stiano,
+          cannot handle.
+        </li>
+        <li>
+          Place four sequences on the blank orange spaces in the equation grid.
+        </li>
+        <li>
+          All <strong>Sequence</strong> digits must satisfy the conditions set
+          by the equations.
+        </li>
+        <li>
+          Each <strong>Sequence</strong> can only occupy one spot at a time.
+        </li>
+        <li>
+          You may move sequences between spots and the main grid as needed to
+          find the solution. You have a maximum of
+          <span class="maxMove"></span> moves.
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="complete-container">
+      <div id="game-container">
+        <span>Move Them:</span>
+        <div id="game-grid"></div>
+      </div>
+      <div id="equation-grid">
+        <div id="row1">
+          <div class="spot-replicate" data-replicate="1"></div>
+          <div class="operator">×</div>
+          <div class="spot-replicate" data-replicate="2"></div>
+          <div class="operator">=</div>
+          <div class="spot-replicate" data-replicate="3"></div>
+          <div class="operator">+</div>
+          <div class="spot-replicate" data-replicate="4"></div>
+        </div>
+        <div class="equalrow">
+          <div class="operator equal">=</div>
+          <div class="empty-spot"></div>
+          <div class="operator equal">=</div>
+          <div class="empty-spot"></div>
+          <div class="operator equal">=</div>
+          <div class="empty-spot"></div>
+          <div class="operator equal">=</div>
+        </div>
+        <div id="row2">
+          <div class="spot" data-spot="1" data-name=""></div>
+          <div class="empty-spot"></div>
+          <div class="spot" data-spot="2" data-name=""></div>
+          <div class="empty-spot"></div>
+          <div class="spot" data-spot="3" data-name=""></div>
+          <div class="empty-spot"></div>
+          <div class="spot" data-spot="4" data-name=""></div>
+        </div>
+        <div class="equalrow">
+          <div class="operator equal">=</div>
+          <div class="empty-spot"></div>
+          <div class="operator equal">=</div>
+          <div class="empty-spot"></div>
+          <div class="operator equal">=</div>
+          <div class="empty-spot"></div>
+          <div class="operator equal">=</div>
+        </div>
+        <div id="row3">
+          <div class="spot-replicate" data-replicate="1"></div>
+          <div class="operator">+</div>
+          <div class="spot-replicate" data-replicate="2"></div>
+          <div class="operator">=</div>
+          <div class="spot-replicate" data-replicate="3"></div>
+          <div class="operator">×</div>
+          <div class="spot-replicate" data-replicate="4"></div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+      const maxMove = 8;
+      const cards = [
+        "seer",
+        "clown",
+        "magician",
+        "faceless",
+        "marionettist",
+        "bizarrosorcerer",
+        "scholarofyore",
+        "miracleinvoker",
+        "attendantofmysteries",
+      ];
+      const gameGrid = document.getElementById("game-grid");
+      const equationGrid = document.getElementById("equation-grid");
+
+      cards.forEach((name) => {
+        const img = document.createElement("img");
+        img.src = `../images/${name}.jpg`;
+        img.dataset.name = name;
+        gameGrid.appendChild(img);
+      });
+
+      new Sortable(gameGrid, {
+        group: "cards",
+        animation: 150,
+      });
+      const ans = {
+        miracleinvoker: "scholarofyore",
+        scholarofyore: "miracleinvoker",
+        attendantofmysteries: "marionettist",
+        marionettist: "attendantofmysteries",
+      };
+
+      function checkArrayPairs(arr) {
+        if (
+          ans[arr[0]] &&
+          ans[arr[0]] === arr[1] &&
+          ans[arr[2]] &&
+          ans[arr[2]] === arr[3]
+        )
+          return true;
+        else return false;
+      }
+      const allSpots = document.querySelectorAll(".spot");
+      function checkWin() {
+        const checkArray = [];
+        allSpots.forEach((spot) => {
+          checkArray.push(spot.dataset.name);
+        });
+        console.log(checkArray, ans);
+        if (checkArrayPairs(checkArray)) {
+          showwinMessage("Stiano's fraudness was not revealed.");
+        }
+      }
+      allSpots.forEach((spot) => {
+        new Sortable(spot, {
+          group: "cards",
+          animation: 150,
+          sort: false,
+          onAdd: (evt) => {
+            updateMoveCount();
+            spot.dataset.name = evt.item.dataset.name;
+            if (spot.children.length > 1) {
+              const existing = Array.from(spot.children).find(
+                (child) => child !== evt.item,
+              );
+              gameGrid.appendChild(existing);
+            }
+            document
+              .querySelectorAll(
+                `.spot-replicate[data-replicate="${spot.dataset.spot}"]`,
+              )
+              .forEach((itm) => {
+                itm.innerHTML = spot.innerHTML;
+              });
+            checkWin();
+            if (moveCount > maxMove) {
+              showDeathMessage(
+                "Stiano's fraudness got revealed to the public. He lost anchors, lost control, and went on a rampage.",
+              );
+            }
+          },
+          onRemove: (evt) => {
+            document
+              .querySelectorAll(
+                `.spot-replicate[data-replicate="${spot.dataset.spot}"]`,
+              )
+              .forEach((itm) => {
+                spot.dataset.name = "";
+                itm.innerHTML = "";
+              });
+          },
+        });
+      });
+    </script>
+
+    <script src="../scripts.js"></script>
+  </body>
+</html>

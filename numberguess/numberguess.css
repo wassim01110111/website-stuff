@@ -1,0 +1,130 @@
+#numberguess {
+  width: 100%;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+#hint-history {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #3b3b6b, #2b2b4b);
+  padding: 10px;
+  border-radius: 10px;
+  gap: 6px;
+}
+
+.hint {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)) 1fr;
+  align-items: center;
+  background: linear-gradient(135deg, #3b3b6b, #2b2b4b);
+  padding: 10px;
+  border-radius: 10px;
+  gap: 6px;
+}
+
+.hint-number {
+  background: #5c5cff;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 8px;
+  transition: transform 0.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hint-number.active {
+  transform: scale(1.2);
+}
+.hint-number.selected {
+  border: 2px solid #ff0000;
+}
+
+.colorButtons {
+  display: flex;
+  flex-direction: row;
+  visibility: hidden;
+  gap: 4px;
+}
+
+.colorButtons button {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.hint-stats {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.hint-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  color: #000000;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.right {
+  background: #1dd1a1;
+}
+.wrong {
+  background: #ee5253;
+}
+.misplaced {
+  background: #feca57;
+}
+
+#input-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#input-container input {
+  padding: 10px;
+  width: 50px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #5c5cff;
+  background: #2b2b4b;
+  color: #fff;
+  font-size: 1.2rem;
+}
+#input-container input.active {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px 3px #5c5cff;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+#input-container button {
+  padding: 10px 15px;
+  background: #5c5cff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#input-container button:hover {
+  background: #3b3bff;
+}

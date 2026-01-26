@@ -54,7 +54,7 @@ function pourLiquid(from, to) {
   let spaceAvailable = toMax - toCurrent;
   let amountToPour = Math.min(fromCurrent, spaceAvailable);
   if (amountToPour === 0 || spaceAvailable === 0) {
-    container.classList.remove("selected");
+    from.classList.remove("selected");
     selectedContainer = null;
     return;
   }

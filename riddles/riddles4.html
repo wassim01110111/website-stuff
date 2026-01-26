@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="riddles.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          Arrodes is a highly intelligent <strong>Sealed Artifact</strong> that
+          can answer anyone's questions. After each response however, Arrodes
+          challenges the user with one of his <strong>riddles</strong>.
+        </li>
+        <li>Arrodes presents the following <strong>riddle</strong>:</li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: none; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+
+    <div id="answer-riddle"></div>
+
+    <script>
+      const maxMove = null;
+      const riddle = [
+        "Can you determine the <strong>height</strong> of the Great Master simply by observing his shadow?",
+        "The dwarf standing beside him is 150 centimeters tall and casts a shadow that is 225 centimeters long.",
+        "Write the height of the Great Master in centimeters.",
+      ];
+      const ans = {
+        showImage: "../riddleimg/riddle2.png",
+        answer: 180,
+        numbersOnly: true,
+        maxChars: false,
+        lowercase: true,
+        customFunc: null,
+      };
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="riddles.js"></script>
+  </body>
+</html>

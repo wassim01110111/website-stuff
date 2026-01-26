@@ -5,6 +5,26 @@
     <title>Wassim's Riddles</title>
 
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      #menu-puzzles {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        background-color: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        margin-top: 1em;
+        margin-bottom: 3em;
+        color: #e5e7eb;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      }
+    </style>
   </head>
   <body>
     <div class="title-header">
@@ -21,27 +41,73 @@
       <span>🧩 Choose a Puzzle</span>
       <button onclick="resetStats()">Reset stats ⚠️</button>
     </div>
-    <div class="stats"></div>
+    <div id="stats"></div>
 
-    <div class="banks" style="height: auto; margin-top: 60px">
-      <div class="bank" style="position: relative; margin: 0 auto; width: 90%">
-        <h2 class="menuHeader" data-href="raft">Raft Puzzles</h2>
-        <h2 class="menuHeader" data-href="clock">Clock Puzzles</h2>
-        <h2 class="menuHeader" data-href="potion">Potion Brewing</h2>
-        <h2 class="menuHeader" data-href="stack">Stacks</h2>
-        <h2 class="menuHeader" data-href="placement">Tarot Cards</h2>
-        <h2 class="menuHeader" data-href="coin">Coin Gambit</h2>
+    <div id="menu-puzzles">
+      <div class="headerContainer" data-href="maze">
+        <span class="menuHeader">Ice Puzzles</span>
+      </div>
+      <div class="headerContainer" data-href="raft">
+        <span class="menuHeader">Raft Puzzles</span>
+      </div>
+      <div class="headerContainer" data-href="clock">
+        <span class="menuHeader">Clock Puzzles</span>
+      </div>
+      <div class="headerContainer" data-href="potion">
+        <span class="menuHeader">Potion Brewing</span>
+      </div>
+      <div class="headerContainer" data-href="stack">
+        <span class="menuHeader">Stacks</span>
+      </div>
+      <div class="headerContainer" data-href="placement">
+        <span class="menuHeader">Tarot Divinations</span>
+      </div>
+      <div class="headerContainer" data-href="coin">
+        <span class="menuHeader">Coin's Gambit</span>
+      </div>
+      <div class="headerContainer" data-href="numberguess">
+        <span class="menuHeader">Number Guessing</span>
+      </div>
+      <div class="headerContainer" data-href="scale">
+        <span class="menuHeader">Scale</span>
+      </div>
+      <div class="headerContainer" data-href="chairhop">
+        <span class="menuHeader">Chair Hopping</span>
+      </div>
+      <div class="headerContainer" data-href="slicing">
+        <span class="menuHeader">Slicing</span>
+      </div>
+      <div class="headerContainer" data-href="misc">
+        <span class="menuHeader">Miscellaneous</span>
+      </div>
+      <div class="headerContainer" data-href="riddles">
+        <span class="menuHeader">Riddles</span>
       </div>
     </div>
     <script src="scripts.js"></script>
     <script>
-      document.querySelectorAll(".menuHeader").forEach((header) => {
+      let hideCompleted = false;
+      function rankPuzzle(puzzleXP) {
+        if (puzzleXP > 0 && puzzleXP < 4) {
+          return "easy";
+        } else if (4 <= puzzleXP && puzzleXP < 6) {
+          return "medium";
+        } else if (6 <= puzzleXP && puzzleXP < 9) {
+          return "hard";
+        } else {
+          return "extreme";
+        }
+      }
+      document.querySelectorAll(".headerContainer").forEach((header) => {
         const prehref = header.dataset.href + "/";
+        const fileContainer = document.createElement("div");
+        fileContainer.className = "file-container";
+        header.appendChild(fileContainer);
 
         Object.keys(xpFiles).forEach((fileName) => {
           if (fileName.startsWith(header.dataset.href)) {
             const button = document.createElement("button");
-            header.appendChild(button);
+            fileContainer.appendChild(button);
             button.className = "menuButton";
             const href = prehref + fileName;
             const buttonFile = href.split("/").pop();
@@ -50,15 +116,10 @@
               const buttonXP = xpFiles[buttonFile].xpGained;
               console.log(buttonXP, buttonFile);
               if (playerData.completedLevels[buttonFile]) {
+                button.dataset.info = "completed";
                 button.classList.add("completed");
-              } else if (buttonXP > 0 && buttonXP < 4) {
-                button.classList.add("easy");
-              } else if (4 <= buttonXP && buttonXP < 6) {
-                button.classList.add("medium");
-              } else if (6 <= buttonXP && buttonXP < 9) {
-                button.classList.add("hard");
               } else {
-                button.classList.add("extreme");
+                button.classList.add(rankPuzzle(buttonXP));
               }
             } else {
               button.textContent = "File not found";
@@ -70,16 +131,65 @@
         });
       });
       function updateStatsUI() {
-        const statsDiv = document.querySelector(".stats");
-        if (!statsDiv) return;
+        const statsDiv = document.getElementById("stats");
 
         const { sequence, time_played, totalXP } = playerData.stats;
-
-        statsDiv.innerHTML = `
+        const beyonderStats = document.createElement("div");
+        beyonderStats.innerHTML = `
         <h3>Beyonder Stats</h3>
         <p>Sequence: <span>${sequence}</span></p>
         <p>Time Played: <span>${formatTime(time_played)}</span></p>
+        <p>Puzzles solved: <span>${Object.keys(playerData.completedLevels).length}</span></p>
       `;
+        const puzzleStatsDict = { easy: 0, medium: 0, hard: 0, extreme: 0 };
+        for (const level in playerData.completedLevels) {
+          if (!xpFiles[level]) continue;
+          const difficulty = rankPuzzle(xpFiles[level].xpGained);
+          puzzleStatsDict[difficulty]++;
+        }
+        const puzzleStats = document.createElement("div");
+        puzzleStats.innerHTML = `
+        <h3>Puzzle Solved Stats</h3>
+        <div style="display:flex; gap:10px;"><p><span class="menuButton easy">Easy: ${puzzleStatsDict.easy}</span></p>
+        <p><span class="menuButton medium">Medium: ${puzzleStatsDict.medium}</span></p>
+        <p><span class="menuButton hard">Hard: ${puzzleStatsDict.hard}</span></p>
+        <p><span class="menuButton extreme">Extreme: ${puzzleStatsDict.extreme}</span></p>
+        </div>
+
+      `;
+        puzzleStats.style.display = "flex";
+        puzzleStats.style.flexDirection = "column";
+        puzzleStats.style.gap = "20px";
+        const hidePuzzles = document.createElement("button");
+        hidePuzzles.className = "menuButton completed";
+        hidePuzzles.textContent = "Hide Completed Puzzles";
+        hidePuzzles.addEventListener("click", () => {
+          document
+            .querySelectorAll('.menuButton[data-info="completed"]')
+            .forEach((btn) => {
+              btn.style.display = hideCompleted ? "" : "none";
+            });
+          if (hideCompleted) {
+            hidePuzzles.textContent = "Hide Completed Puzzles";
+            document.querySelectorAll(".headerContainer").forEach((c) => {
+              c.style.display = "";
+            });
+          } else {
+            document.querySelectorAll(".headerContainer").forEach((c) => {
+              if (
+                ![...c.querySelectorAll(".menuButton")].some(
+                  (b) => getComputedStyle(b).display !== "none",
+                )
+              )
+                c.style.display = "none";
+            });
+            hidePuzzles.textContent = "Show Completed Puzzles";
+          }
+          hideCompleted = !hideCompleted;
+        });
+        puzzleStats.appendChild(hidePuzzles);
+        statsDiv.appendChild(beyonderStats);
+        statsDiv.appendChild(puzzleStats);
       }
       if (fixStats()) {
         location.reload();

@@ -1,0 +1,47 @@
+#pizza-container {
+  width: 400px;
+  height: 400px;
+}
+
+.slice {
+  cursor: pointer;
+  transition:
+    fill 0.5s ease,
+    transform 0.3s ease,
+    filter 0.3s ease,
+    opacity 0.5s ease;
+  transform-origin: 200px 200px;
+  opacity: 1;
+}
+
+.slice:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.disabled {
+  fill: url(#disabledGradient) !important;
+  opacity: 0.8;
+  transition:
+    fill 0.5s ease,
+    opacity 0.5s ease;
+}
+.slice-image,
+.slice-gradient {
+  transition: opacity 0.5s ease;
+  transform-origin: 200px 200px;
+  cursor: pointer;
+}
+
+.slice-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.slice-gradient {
+  opacity: 0;
+}
+
+.disabled .slice-gradient {
+  opacity: 1;
+}

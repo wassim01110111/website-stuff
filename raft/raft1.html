@@ -108,7 +108,7 @@
           (raftSide === "left" ? left : right).push(name);
         } else {
           if (raft.length >= 1) {
-            statusDiv.textContent = "Cannot take more!";
+            writeToStatus("Cannot take more!", "red");
             return;
           }
           if (location !== raftSide) return;
@@ -166,7 +166,7 @@
           showwinMessage("🎉 CoI-Completed is saved!");
           gameOver = true;
         } else {
-          statusDiv.textContent = "";
+          writeToStatus("");
         }
       }
 

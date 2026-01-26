@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="placement.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          You want to leave the strange woman's room, but you realize the door
+          you entered from turned upside-down and doesn't open.
+        </li>
+        <li>
+          5 cards are placed on the upside-down door and your spiritual
+          intuition kicks in:
+        </li>
+        <li>
+          The <strong>Marionettist</strong> must be next to the
+          <strong>Clown</strong>.
+        </li>
+
+        <li>The <strong>Fool</strong> must be second to the far left.</li>
+
+        <li>
+          The <strong>Scholar of Yore</strong> must be somewhere to the left of
+          the <strong>Seer</strong>.
+        </li>
+
+        <li>
+          The <strong>Clown</strong> must be located two places to the right of
+          the <strong>Seer</strong>.
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="cards"></div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+    <script>
+      const maxMove = 10;
+      const original_order = [
+        "marionettist",
+        "scholarofyore",
+        "seer",
+        "clown",
+        "fool",
+      ];
+
+      const final_order = [
+        "clown",
+        "marionettist",
+        "seer",
+        "fool",
+        "scholarofyore",
+      ]; // why are you cheating
+    </script>
+    <script src="../scripts.js"></script>
+    <script src="placement.js"></script>
+  </body>
+</html>

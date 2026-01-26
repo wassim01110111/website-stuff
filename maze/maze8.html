@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="maze.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules"></ul>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <button id="undo" style="margin-top: -5px">Undo</button>
+      Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      <span class="status" id="status"></span>
+    </div>
+    <div id="game-container">
+      <span>Select Player:</span>
+      <div id="game-grid"></div>
+    </div>
+    <div id="board"></div>
+    <div id="gamepad">
+      <button id="up">↑</button>
+      <div>
+        <button id="left">←</button>
+        <button id="down">↓</button>
+        <button id="right">→</button>
+      </div>
+    </div>
+    <script>
+      const maxMove = 5;
+      let undoCounter = 2;
+      const iniRules = [
+        "<strong>Springs</strong> let you <em>bounce</em> off walls, a most useful ability.",
+      ];
+
+      // (top), bottom, (left), right
+      // const boardMatrix = [
+      //   [
+      //   {
+      //     ground: "empty" ,
+      //     walls: [0, 0],
+      //     character: null,
+      //     obj: null,
+      //     hazard: null,
+      //     destination: null,
+      //   },
+      // ],
+      // ];
+      const boardMatrix = [
+        [
+          {
+            ground: "empty",
+            walls: [1, 0, 1, 0],
+            character: "klein",
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: "spring",
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 0, 0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 1, 0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 1, 0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: "klein",
+          },
+          {
+            ground: "empty",
+            walls: [1, 0, 0, 1],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+        ],
+        [
+          {
+            ground: "empty",
+            walls: [0, 1, 1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 1],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+        ],
+        [
+          {
+            ground: "hole",
+            walls: [1, 1, 0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "hole",
+            walls: [1, 1],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 1],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+        ],
+        [
+          {
+            ground: "empty",
+            walls: [1, 1, 1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: "fors",
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [1, 0],
+            character: null,
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 0],
+            character: null,
+            obj: "spring",
+            hazard: null,
+            destination: null,
+          },
+          {
+            ground: "empty",
+            walls: [0, 1, 0, 1],
+            character: "fors",
+            obj: null,
+            hazard: null,
+            destination: null,
+          },
+        ],
+      ];
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="maze.js"></script>
+  </body>
+</html>

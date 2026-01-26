@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Potion Making</title>
+    <link rel="stylesheet" href="potion.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          You are finally about to become a <strong>True God</strong>! All that
+          is left, is concocting this potion.
+        </li>
+        <li>
+          It takes equal measures of blue and red together to make your
+          Apotheosis potion.
+        </li>
+        <li>Any other ratio will make you lose control.</li>
+        <li>
+          You must fill the entire eight-litre container with that mixture.
+        </li>
+        <li>
+          Be careful: you only have a <span class="maxMove"></span> of pours
+          before the potion begins to bubble out of control.
+        </li>
+        <li>
+          Click a container to select it, then click another to pour. Clicking
+          the same container again will deselect it. Overflow is handled
+          naturally: any excess potion stays behind if the target container
+          can't hold it all.
+        </li>
+      </ul>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="potion-container-wrapper"></div>
+    <div class="status" id="status"></div>
+    <script>
+      const maxMove = 6;
+      const potionContainers = [
+        { capacity: 8, color: "red", current: 8 },
+        { capacity: 5, color: "blue", current: 5 },
+        { capacity: 5, color: null, current: 0 },
+        { capacity: 3, color: null, current: 0 },
+      ];
+      const winningSeq = "Hermit";
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="potion2.js"></script>
+  </body>
+</html>

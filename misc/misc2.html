@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+      #card-grid {
+        display: grid;
+        gap: 1em;
+      }
+      #game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        background-color: #5757a1;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        margin-top: 1em;
+        margin-bottom: 3em;
+        color: #f0f0f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+      }
+      #game-grid {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 15px;
+      }
+
+      #game-grid img:active {
+        cursor: grabbing;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .card-placeholder,
+      .game-slot {
+        width: 12em;
+        height: 19em;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        border: 2px dashed #888;
+        background-blend-mode: multiply;
+      }
+
+      .card-placeholder img,
+      .game-slot img {
+        width: 90%;
+        height: 90%;
+        object-fit: cover;
+        border-radius: 6px;
+        cursor: grab;
+      }
+    </style>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          <strong>4 figures</strong> stand before you,
+          <strong>3 of them</strong> bound by their own strange demands. To
+          proceed, you must arrange them carefully.
+        </li>
+        <li>
+          You may only make <span class="maxMove"></span> moves, so plan wisely.
+        </li>
+        <li>
+          The figures can be rearranged by <strong>swapping positions</strong>.
+          Each swap counts as one move.
+        </li>
+
+        <li>
+          Each figure controls all tiles of their <strong>own color</strong>.
+          Wherever a figure stands, all matching tiles below will mirror them.
+        </li>
+        <li>
+          The <strong>Clown</strong> wants Fool to have spots to be underneath
+          him.
+        </li>
+        <li>
+          The <strong>Seer</strong> wants at least one of the spots at the top.
+        </li>
+
+        <li>
+          The <strong>Magician</strong> doesn't want to be next to the
+          <strong>Seer</strong> (top and bottom allowed).
+        </li>
+      </ul>
+    </div>
+
+    <div class="status" id="status"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="game-container">
+      <span>Move Them:</span>
+      <div id="game-grid"></div>
+    </div>
+    <div id="card-grid"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+      const maxMove = 5;
+      const matrix = [
+        ["red", "yellow", "green", "yellow"],
+        ["yellow", "red", "yellow", "blue"],
+        ["green", "red", "green", "blue"],
+        ["blue", "blue", "green", "red"],
+      ];
+
+      const gameArray = [
+        ["fool", "red"],
+        ["clown", "blue"],
+        ["seer", "green"],
+        ["magician", "yellow"],
+      ];
+      const ans = ["seer", "magician", "fool", "clown"]; //stop cheating dawg
+      const cardGrid = document.getElementById("card-grid");
+
+      matrix.forEach((row) => {
+        row.forEach((color) => {
+          const div = document.createElement("div");
+          div.className = "card-placeholder";
+          div.style.backgroundColor = color;
+
+          const imgData = gameArray.find((g) => g[1] === color);
+          const img = document.createElement("img");
+          if (imgData) img.src = `../images/${imgData[0]}.jpg`;
+          img.dataset.color = color;
+
+          div.appendChild(img);
+          cardGrid.appendChild(div);
+        });
+      });
+
+      cardGrid.style.gridTemplateColumns = `repeat(${matrix[0].length}, 1fr)`;
+
+      const gameGrid = document.getElementById("game-grid");
+      gameArray.forEach(([name, color]) => {
+        const slot = document.createElement("div");
+        slot.className = "game-slot";
+        slot.style.backgroundColor = color;
+        slot.dataset.color = color;
+        slot.dataset.name = name;
+
+        const img = document.createElement("img");
+        img.src = `../images/${name}.jpg`;
+        img.dataset.color = color;
+        img.dataset.name = name;
+
+        slot.appendChild(img);
+        gameGrid.appendChild(slot);
+        new Sortable(slot, {
+          group: "images",
+          animation: 150,
+          swap: true,
+          onAdd: (evt) => {
+            checkWin();
+            updateMoveCount();
+            if (moveCount > maxMove) {
+              showDeathMessage("The figures grew impatient and killed you.");
+              return;
+            }
+            const draggedImg = evt.item;
+            const newSlot = draggedImg.parentElement;
+            newSlot.dataset.name = draggedImg.dataset.name;
+            document
+              .querySelectorAll(
+                `#card-grid img[data-color='${newSlot.dataset.color}']`,
+              )
+              .forEach((ph) => (ph.src = draggedImg.src));
+            const swappedImg = evt.swapItem;
+            const oldSlot = swappedImg.parentElement;
+            oldSlot.dataset.name = swappedImg.dataset.name;
+            document
+              .querySelectorAll(
+                `#card-grid img[data-color='${oldSlot.dataset.color}']`,
+              )
+              .forEach((ph) => (ph.src = swappedImg.src));
+          },
+        });
+      });
+
+      function checkWin() {
+        const items = document.querySelectorAll(".game-slot [data-name]");
+        const namesArray = Array.from(items, (item) => item.dataset.name);
+        if (arraysEqual(namesArray, ans)) {
+          showwinMessage("Everyone is happy!");
+        }
+      }
+    </script>
+    <script src="../scripts.js"></script>
+  </body>
+</html>

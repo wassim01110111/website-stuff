@@ -21,7 +21,7 @@ for (const key in spots) {
         parseInt(selectedBook.dataset.size) < parseInt(topBook.dataset.size)
       ) {
         updateMoveCount();
-        statusDiv.textContent = "";
+        writeToStatus("");
         spots[key].appendChild(selectedBook);
         if (key === "right" && spots.right.children.length === numberBooks) {
           showwinMessage("You successfully managed to stack every chapter!");
@@ -32,8 +32,11 @@ for (const key in spots) {
           );
         }
       } else {
-        statusDiv.textContent =
-          "Cannot stack a bigger chapter on top of a smaller one";
+        writeToStatus(
+          "Cannot stack a bigger chapter on top of a smaller one",
+          "red",
+          true,
+        );
       }
       selectedBook.classList.remove("selected");
       selectedBook = null;

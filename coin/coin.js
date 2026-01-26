@@ -91,12 +91,12 @@ function onCellClick(cell) {
 
   if (selectedCoin === null) {
     if (value !== 2) {
-      statusDiv.textContent = "Select a coin first.";
+      writeToStatus("Select a coin first.", "red");
       return;
     }
     const moves = canMove(row, col);
     if (moves.length === 0) {
-      statusDiv.textContent = "This coin cannot move.";
+      writeToStatus("This coin cannot move.", "yellow");
       return;
     }
 
@@ -117,7 +117,7 @@ function onCellClick(cell) {
       if (target) target.classList.add("highlight");
     });
 
-    statusDiv.textContent = "Select a highlighted cell to move the coin.";
+    writeToStatus("Select a highlighted cell to move the coin.", "green");
   } else {
     if (selectedCoin[0] === row && selectedCoin[1] === col) {
       selectedCoin = null;
@@ -128,12 +128,12 @@ function onCellClick(cell) {
       document
         .querySelectorAll(".selected")
         .forEach((c) => c.classList.remove("selected"));
-      statusDiv.textContent = "Coin deselected.";
+      writeToStatus("Coin deselected.");
       return;
     }
 
     if (!allowedMoves.some(([r, c]) => r === row && c === col)) {
-      statusDiv.textContent = "Cannot move coin to that position.";
+      writeToStatus("Cannot move coin to that position.", "yellow");
       return;
     }
 
@@ -156,7 +156,7 @@ function onCellClick(cell) {
       .querySelectorAll(".selected")
       .forEach((c) => c.classList.remove("selected"));
     createBoard();
-    statusDiv.textContent = "Coin moved.";
+    writeToStatus("Coin moved.", "green");
     checkWin();
     updateMoveCount?.();
   }
@@ -181,6 +181,6 @@ document.getElementById("undo").addEventListener("click", () => {
       for (let j = 0; j < (boardMatrix[i]?.length || 0); j++)
         boardMatrix[i][j] = prev[i][j];
     createBoard();
-    statusDiv.textContent = "Undo performed.";
+    writeToStatus("Yesterday Once More Charm used.");
   }
 });

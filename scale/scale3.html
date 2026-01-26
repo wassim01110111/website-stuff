@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="scale.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>One of the Xios has been parasitized by Amon again!</li>
+        <li>
+          This time, Amon came prepared. Its weight is slightly different than
+          the others, but we don't know whether it's lighter or heavier.
+        </li>
+        <li>
+          Help Fors deduce which Xio is Amon in disguise. Use the scale to
+          compare carefully.
+        </li>
+        <li>
+          You may place Xios on either side of the scale and observe how it
+          tilts. The other Xios are maintaining a
+          <strong>Fragile Balance</strong> so the scale can only be used
+          <span class="maxMove"></span> times before Amon starts parasitizing
+          them.
+        </li>
+        <li>
+          Once identified, the parasitized Xio must be thrown into the
+          <strong>Junk Pile</strong> to remove Amon from the game.
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div id="maxMove" style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="game"></div>
+    <script>
+      const maxMove = 3;
+      const arr = [12, null];
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+    <script src="../scripts.js"></script>
+    <script src="scale.js"></script>
+  </body>
+</html>

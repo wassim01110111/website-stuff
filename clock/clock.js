@@ -3,7 +3,7 @@ const gridElement = document.getElementById("grid");
 const undoButton = document.getElementById("undo");
 
 let undoCount = 5;
-undoButton.textContent = `Undo (${undoCount} left)`;
+undoButton.textContent = `Use a Yesterday Once More Charm (${undoCount} left)`;
 const playerImg = document.createElement("img");
 playerImg.src = "../images/amon.png";
 playerImg.classList.add("player");
@@ -93,12 +93,12 @@ function rotateClocks() {
 
 function move(dir) {
   if (gameOver) return;
-  statusDiv.textContent = "";
+  writeToStatus();
   const cell = grid[player.y][player.x];
 
   if (cell.type === "clock") {
     if (!cell.directions.includes(dir)) {
-      statusDiv.textContent = "The clock doesn't allow you to move this way";
+      writeToStatus("The clock doesn't allow you to move this way", "red");
       return;
     }
   }
@@ -157,11 +157,11 @@ document.getElementById("left").addEventListener("click", () => move(3));
 function undo() {
   if (gameOver) return;
   if (undoCount < 1) {
-    statusDiv.textContent = "Out of undo's!";
+    writeToStatus("Out of Yesterday Once More Charms!", "red");
     return;
   }
   undoCount--;
-  undoButton.textContent = `Undo (${undoCount} left)`;
+  undoButton.textContent = `Use a Yesterday Once More Charm (${undoCount} left)`;
   if (!history.length) return;
   moveCount--;
   const prev = history.pop();

@@ -117,7 +117,7 @@
           dest = raftSide === "left" ? left : right;
         } else {
           if (raft.length >= 2) {
-            statusDiv.textContent = "🚫 Raft can carry max 2!";
+            writeToStatus("🚫 Raft can carry max 2!", "red");
             source.push(character);
             return;
           }
@@ -141,8 +141,7 @@
       function moveRaft() {
         if (gameOver) return;
         if (raft.length === 0) {
-          statusDiv.textContent =
-            "🚣‍♂️ You need at least one person on the raft!";
+          writeToStatus("🚣‍♂️ You need at least one person on the raft!", "red");
           return;
         }
 
@@ -169,7 +168,7 @@
           return;
         }
 
-        statusDiv.textContent = "";
+        writeToStatus("");
       }
 
       window.addEventListener("resize", render);

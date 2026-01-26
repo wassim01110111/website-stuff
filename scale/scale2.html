@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="scale.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          They say weight shows power! <strong>Kemeow</strong>,
+          <strong>Fors</strong>, <strong>Xio</strong> and
+          <strong>Klein</strong> want to see who's the most powerful.
+        </li>
+        Order the characters in the red rectangle in order from
+        <strong>lightest</strong>
+        to
+        <strong>heaviest</strong
+        >.
+        <li>
+          Use the scale to compare them, but beware, it can only weigh
+          <strong>one pair per side</strong> at a time!
+        </li>
+        <li>
+          The scale is fragile and will break after
+          <span class="maxMove"></span> attempts, so compare wisely.
+        </li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div id="maxMove" style="display: flex; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+    <div id="game"></div>
+    <script>
+      const maxMove = 5;
+      const arr = ["klein", "xio", "fors", "kemeow"];
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+    <script src="../scripts.js"></script>
+    <script src="scale2.js"></script>
+  </body>
+</html>

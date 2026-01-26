@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="riddles.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          Arrodes is a highly intelligent <strong>Sealed Artifact</strong> that
+          can answer anyone's questions. After each response however, Arrodes
+          challenges the user with one of his <strong>riddles</strong>.
+        </li>
+        <li>Arrodes presents the following <strong>riddle</strong>:</li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: none; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+
+    <div id="answer-riddle"></div>
+
+    <script>
+      const maxMove = null;
+      const riddle = [
+        "A <strong>Hunter</strong> is chasing after a <strong>Traveler</strong> across the <strong>Northern Continent</strong>",
+        "The <strong>Traveler</strong> teleports to a different spot everyday. The <strong>Hunter</strong> marked the spots the <strong>Traveler</strong> teleports to.",
+        "The <strong>Traveler</strong> cannot teleport to a location that isn't connected by a path marked on the map.",
+        "It takes one day for the <strong>Hunter</strong> to reach a new location.",
+        "The <strong>Traveler</strong> is currently in <strong>Loen Kingdom</strong> (spot B), the <strong>Hunter</strong> starts at <strong>Masin</strong> (spot A)",
+        "Because the <strong>Traveler</strong> teleports, he arrives at the location first. But he lacks the spirituality to teleport again for an entire day.",
+        "If the <strong>Hunter</strong> plans his route well, he will be guaranteed to catch the <strong>Traveler</strong> in maximum four moves.",
+        "What path should the <strong>Hunter</strong> follow for his first three moves?",
+        "Write the path using the letters shown only.",
+      ];
+      const ans = {
+        showImage: "../riddleimg/riddle1.png",
+        answer: new Set(["fea", "efa"]),
+        numbersOnly: false,
+        maxChars: false,
+        lowercase: true,
+        customFunc: (str) => {
+          return str.replace(/[^a-zA-Z]/g, "");
+        },
+      };
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="riddles.js"></script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="riddles.css" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="title-header">
+      <button onclick="location.href = '../index.html'">
+        ⬅ Back to Riddle Selection
+      </button>
+      <div class="header-title">
+        <span id="title_name"></span>
+        <span><br />Time Elapsed: </span>
+        <span id="time_played">0s</span>
+      </div>
+      <button onclick="location.reload()">🔄️ Retry</button>
+    </div>
+    <div class="rules-container">
+      <h2>Rules</h2>
+      <ul class="rules">
+        <li>
+          Arrodes is a highly intelligent <strong>Sealed Artifact</strong> that
+          can answer anyone's questions. After each response however, Arrodes
+          challenges the user with one of his <strong>riddles</strong>.
+        </li>
+        <li>Arrodes presents the following <strong>riddle</strong>:</li>
+      </ul>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="display: none; align-items: center; gap: 10px">
+      <p style="margin: 0">
+        Moves: <span id="moveCount">0</span> / <span class="maxMove"></span>
+      </p>
+    </div>
+
+    <div id="answer-riddle"></div>
+
+    <script>
+      const maxMove = null;
+      const numRiddle = Math.floor(Math.random() * (30 - 16 + 1)) + 16;
+      const riddle = [
+        `Two twin brothers attempt to summon their first Spirit World Creature. But something unusual happens: <strong>three Spirit World Creatures</strong> respond to their summon.`,
+        `The contract states that the brothers will be free of it once the total time the Spirit World Creatures have spent under their care adds up to the combined age of the brothers.`,
+        `Each creature counts its time separately.`,
+        `If the brothers made their summon at ${numRiddle} years old, what will their age be when the contract ends?`,
+      ];
+      const ans = {
+        showImage: null,
+        answer: 3 * numRiddle,
+        numbersOnly: true,
+        maxChars: false,
+        lowercase: true,
+        customFunc: null,
+      };
+    </script>
+
+    <script src="../scripts.js"></script>
+    <script src="riddles.js"></script>
+  </body>
+</html>
