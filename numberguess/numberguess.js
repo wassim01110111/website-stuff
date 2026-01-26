@@ -6,6 +6,8 @@
   const inputContainer = document.getElementById("input-container");
   hintHistorySpan.textContent = "Hint History:";
   hintHistory.appendChild(hintHistorySpan);
+  const noteReset = document.getElementById("noteReset");
+  const defaultColor = "#5c5cff";
 
   function pickRandomFromSet(set) {
     const index = Math.floor(Math.random() * set.size);
@@ -210,7 +212,7 @@
       numBtns.appendChild(createColorButton("green"));
       numBtns.appendChild(createColorButton("red"));
       numBtns.appendChild(createColorButton("yellow"));
-      numBtns.appendChild(createColorButton("#5c5cff"));
+      numBtns.appendChild(createColorButton(defaultColor));
 
       numDiv.addEventListener("mouseenter", () => {
         numBtns.style.visibility = "visible";
@@ -394,5 +396,10 @@
   Sortable.create(guessContainer, {
     animation: 150,
     ghostClass: "dragging",
+  });
+  noteReset.addEventListener("click", () => {
+    document.querySelectorAll(".hint-number").forEach((el) => {
+      el.style.backgroundColor = defaultColor;
+    });
   });
 })();
